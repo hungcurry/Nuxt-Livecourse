@@ -21,22 +21,15 @@ type TRoomFeature = {
 }
 
 type TRoomItem = {
-  // 基本資訊
   _id: string
   name: string
   description: string
-
-  // 房間規格
   areaInfo: string
   bedInfo: string
   maxPeople: number
   price: number
-
-  // 圖片資源
   imageUrl: string
   imageUrlList: string[]
-
-  // 房間配置與設施
   layoutInfo: TRoomFeature[]
   facilityInfo: TRoomFeature[]
   amenityInfo: TRoomFeature[]

@@ -14,6 +14,7 @@ const menuList: TMenuItem[] = [
   // { label: '前台Middleware', path: '/middleware' },
   // { label: '前台Room', path: '/room' },
   // { label: '前台Meta', path: '/meta' },
+  { label: '前台AsyncData', path: '/async-data' },
 
   // admin
   // { label: '後台首頁', path: '/admin' },

@@ -21,7 +21,7 @@ export const useCustomFetch = <T>() => {
     error.value = null
 
     try {
-      const res: TApiResponse<T> = await $fetch(apiUrl)
+      const res = await $fetch<TApiResponse<T>>(apiUrl)
       data.value = res.result ?? null
       return { status: true, data: data.value }
     } catch (err) {
