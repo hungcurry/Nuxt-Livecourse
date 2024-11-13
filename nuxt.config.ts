@@ -9,6 +9,37 @@ export default defineNuxtConfig({
   // ------------------ add ----------------------
   app: {
     baseURL: '/Nuxt-Livecourse/',
+    head: {
+      title: '樂悠悠',
+      htmlAttrs: {
+        lang: 'zh-Hant-TW',
+      },
+      meta: [
+        { charset: 'utf-8' },
+        { 'http-equiv': 'X-UA-Compatible', content: 'IE=Edge' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'format-detection', content: 'telephone=no' },
+        { name: 'theme-color', content: '#ffffff' },
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            '歡迎來到樂悠悠票務集市，在這裡，您可以輕鬆地享受現場活動的激动人心的時刻。我們的目標是讓每個人都能夠體驗娛樂的樂趣',
+        },
+        { property: 'og:title', content: '樂悠悠票務集市' },
+        {
+          property: 'og:description',
+          content: 'Experience More with Ticket Bazaar',
+        },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'FB上的網址' },
+        { property: 'og:image', content: 'FB的圖片' },
+      ],
+      link: [
+        // { rel: 'icon', type: 'image/x-icon', href: 'path/to/your/design' },
+        // { rel: 'apple-touch-icon', href: 'path/to/your/design' },
+      ],
+    },
   },
   srcDir: 'src',
   alias: {

@@ -13,6 +13,7 @@ const menuList: TMenuItem[] = [
   // { label: '前台Server', path: '/server' },
   // { label: '前台Middleware', path: '/middleware' },
   // { label: '前台Room', path: '/room' },
+  // { label: '前台Meta', path: '/meta' },
 
   // admin
   // { label: '後台首頁', path: '/admin' },
