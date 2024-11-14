@@ -31,9 +31,7 @@ const menuList: TMenuItem[] = [
           <p>{{ item.label }} /</p>
         </NuxtLink>
         <!-- 外部連結 使用 target="_blank" external -->
-        <!-- <NuxtLink to="https://thecodingpro.com/courses/nuxt3" target="_blank" external>
-          Nuxt 3 高效入門全攻略
-        </NuxtLink> -->
+        <NuxtLink to="https://thecodingpro.com/courses/nuxt3" target="_blank" external> 外部連結 </NuxtLink>
       </nav>
     </header>
   </div>
