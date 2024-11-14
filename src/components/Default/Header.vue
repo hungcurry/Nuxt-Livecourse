@@ -5,6 +5,7 @@ import { TMenuItem } from '@/types/menuTypes'
 const menuList: TMenuItem[] = [
   // 前台
   { label: '前台index', path: '/' },
+  //{ label: '嵌套router', path: '/router' },
   // { label: '前台Card', path: '/card' },
   // { label: '前台Fetch', path: '/fetch' },
   // { label: '前台bootstrap', path: '/bootstrap' },
@@ -14,7 +15,7 @@ const menuList: TMenuItem[] = [
   // { label: '前台Middleware', path: '/middleware' },
   // { label: '前台Room', path: '/room' },
   // { label: '前台Meta', path: '/meta' },
-  { label: '前台AsyncData', path: '/async-data' },
+  // { label: '前台AsyncData', path: '/async-data' },
 
   // admin
   // { label: '後台首頁', path: '/admin' },
@@ -29,6 +30,10 @@ const menuList: TMenuItem[] = [
         <NuxtLink v-for="(item, idx) in menuList" :key="idx" :to="item.path" :title="item.label">
           <p>{{ item.label }} /</p>
         </NuxtLink>
+        <!-- 外部連結 使用 target="_blank" external -->
+        <!-- <NuxtLink to="https://thecodingpro.com/courses/nuxt3" target="_blank" external>
+          Nuxt 3 高效入門全攻略
+        </NuxtLink> -->
       </nav>
     </header>
   </div>

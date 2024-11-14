@@ -1,0 +1,7 @@
+<script setup></script>
+<template>
+  <div>
+    <h1>嵌套router / routerB</h1>
+  </div>
+</template>
+<style scoped lang="scss"></style>

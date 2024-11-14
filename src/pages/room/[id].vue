@@ -16,7 +16,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <h2>房型詳細頁面</h2>
+  <h2 style="text-align: center">房型詳細頁面</h2>
   <div class="container">
     <button @click="router.go(-1)">回上一頁</button>
     <div class="row justify-content-center">
@@ -65,6 +65,19 @@ onMounted(async () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- 第2層路由 下方頁面 有缺陷會跳回畫面上方 -->
+      <div class="col-md-6">
+        <nav>
+          <h3 style="text-align: center">第2層路由 下方頁面</h3>
+          <hr />
+          <NuxtLink :to="`/room/${route.params.id}`"> 房型首頁 </NuxtLink>
+          <NuxtLink :to="`/room/${route.params.id}/about`">房型介紹</NuxtLink>
+          <NuxtLink :to="`/room/${route.params.id}/list`"> 房型列表 </NuxtLink>
+          <NuxtLink :to="`/room/${route.params.id}/feedbacks`">評價回饋</NuxtLink>
+        </nav>
+        <NuxtPage />
       </div>
     </div>
   </div>
@@ -186,5 +199,8 @@ onMounted(async () => {
   position: absolute;
   left: 0;
   top: 0;
+}
+a {
+  color: $black;
 }
 </style>
