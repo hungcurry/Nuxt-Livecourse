@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { TRoomItem } from '@/types/apiTypes'
+import { TApiRoomItem } from '@/types/apiTypes'
 const route = useRoute()
 const router = useRouter()
 const apiUrl = 'https://nuxr3.zeabur.app/api/v1/rooms'
-const { data: roomsList, FetchInit } = useCustomFetch<TRoomItem[]>()
+const { data: roomsList, FetchInit } = useCustomFetch<TApiRoomItem[]>()
 
 const handleClickRoom = (id: string) => {
   router.push({

@@ -2,12 +2,12 @@
 // 串接 API 取得房型詳細資料
 // API path : https://nuxr3.zeabur.app/api/v1/rooms/{id}
 // 將資料渲染至下方的 div.room-page 區塊
-import { TRoomItem } from '@/types/apiTypes'
+import { TApiRoomItem } from '@/types/apiTypes'
 const router = useRouter()
 const route = useRoute()
 const roomId = route.params.id
 const apiUrl = `https://nuxr3.zeabur.app/api/v1/rooms/${roomId}`
-const { data: room, FetchInit } = useCustomFetch<TRoomItem>()
+const { data: room, FetchInit } = useCustomFetch<TApiRoomItem>()
 
 onMounted(async () => {
   await FetchInit(apiUrl)

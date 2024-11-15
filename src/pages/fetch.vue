@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { TNewsItem } from '@/types/apiTypes'
+import { TApiNewsItem } from '@/types/apiTypes'
 const route = useRoute()
 const apiUrl = 'https://nuxr3.zeabur.app/api/v1/home/news/'
-const { data, isLoading, FetchInit } = useCustomFetch<TNewsItem[]>()
+const { data, isLoading, FetchInit } = useCustomFetch<TApiNewsItem[]>()
 
 onMounted(async () => {
   await FetchInit(apiUrl)
-  // console.log('res', data.value)
+  console.log('res', data.value)
 })
 </script>
 

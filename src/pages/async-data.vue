@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { TNewsItem, TApiResponse } from '@/types/apiTypes'
+import { TApiNewsItem, TApiResponse } from '@/types/apiTypes'
 const route = useRoute()
 const apiUrl = 'https://nuxr3.zeabur.app/api/v1/home/news/'
-const ary = ref<TNewsItem[]>([])
+const ary = ref<TApiNewsItem[]>([])
 
 // !1.~useFetch
 // ~nuxt 打API useFetch (useAsyncData + $fetch)
-const { data, status, error, refresh, clear } = await useFetch<TApiResponse<TNewsItem[]>>(apiUrl)
+const { data, status, error, refresh, clear } = await useFetch<TApiResponse<TApiNewsItem[]>>(apiUrl)
 console.log('nuxt', data.value?.result)
 // 這邊要小心回傳的資料格式是 RefImpl 因此 要多加層value
 ary.value = data.value?.result || []
