@@ -77,12 +77,12 @@ const register = async () => {
 </script>
 
 <template>
-  <div class="bg-light py-3 py-md-5 vh-100">
-    <div class="container">
+  <div class="bg-light py-3 py-md-5 h-full">
+    <div class="container h-full">
       <div class="row justify-content-md-center">
         <div class="col-12 col-md-11 col-lg-8 col-xl-7 col-xxl-6">
           <div class="bg-white p-4 p-md-5 rounded shadow-sm">
-            <h2 class="h3 mb-4">會員註冊</h2>
+            <h2 class="mb-4">會員註冊</h2>
             <form>
               <div class="form-floating mb-4">
                 <label for="firstName">姓名 <span class="text-danger">*</span></label>

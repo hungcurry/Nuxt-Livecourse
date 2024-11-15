@@ -27,17 +27,15 @@ const menuList: TMenuItem[] = [
 </script>
 
 <template>
-  <div>
-    <header>
-      <nav class="d-flex items-center justify-center gap-2">
-        <NuxtLink v-for="(item, idx) in menuList" :key="idx" :to="item.path" :title="item.label">
-          <p>{{ item.label }} /</p>
-        </NuxtLink>
-        <!-- 外部連結 使用 target="_blank" external -->
-        <!-- <NuxtLink to="https://thecodingpro.com/courses/nuxt3" target="_blank" external> 外部連結 </NuxtLink> -->
-      </nav>
-    </header>
-  </div>
+  <header>
+    <nav class="d-flex items-center justify-center gap-2">
+      <NuxtLink v-for="(item, idx) in menuList" :key="idx" :to="item.path" :title="item.label">
+        <p>{{ item.label }} /</p>
+      </NuxtLink>
+      <!-- 外部連結 使用 target="_blank" external -->
+      <!-- <NuxtLink to="https://thecodingpro.com/courses/nuxt3" target="_blank" external> 外部連結 </NuxtLink> -->
+    </nav>
+  </header>
 </template>
 
 <style scoped lang="scss">

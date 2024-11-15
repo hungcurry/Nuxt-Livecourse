@@ -83,14 +83,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['stores'],
   },
-  modules: [
-    [
-      '@pinia/nuxt',
-      {
-        autoImports: ['defineStore', 'acceptHMRUpdate'],
-      },
-    ],
-  ],
+  modules: [['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }], '@unocss/nuxt'],
   // ===================
   // ... 未啟用 ...
   // ===================

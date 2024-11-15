@@ -3,9 +3,11 @@
 // *-------------------------*/
 @use '@style/config/_variables' as var;
 
-// *, *::before, *::after{
-//   box-sizing: border-box;
-// }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 html {
   font-size: 10px;
 }
@@ -92,3 +94,9 @@ body {
   padding: 0 1rem;
   position: relative;
 }
+// .row {
+//   display: flex;
+//   flex-wrap: wrap;
+//   margin-right: -1rem;
+//   margin-left: -1rem;
+// }
