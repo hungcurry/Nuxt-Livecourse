@@ -5,7 +5,7 @@ import { TMenuItem } from '@/types/menuTypes'
 const menuList: TMenuItem[] = [
   // 前台
   { label: '前台index', path: '/' },
-  // { label: '嵌套Router', path: '/router' },
+  { label: '嵌套Router', path: '/router' },
   // { label: '前台bootstrap', path: '/bootstrap' },
   // { label: '前台Card', path: '/card' },
   // ----資料夾-----

@@ -40,6 +40,8 @@ export default defineNuxtConfig({
         // { rel: 'apple-touch-icon', href: 'path/to/your/design' },
       ],
     },
+    // 頁面過渡動畫
+    pageTransition: { name: 'page', mode: 'out-in' },
   },
   srcDir: 'src',
   alias: {
