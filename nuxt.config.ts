@@ -62,8 +62,8 @@ export default defineNuxtConfig({
           api: 'modern',
           // 自動在所有元件引入 _variables.scss
           additionalData: `
-            @use "@style/config/_variables" as *;
-            // @import "@style/config/_variables.scss";
+            // @use "@style/config/_variables" as *;
+            @import "@style/config/_variables.scss";
           `,
         },
       },

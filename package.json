@@ -24,12 +24,9 @@
   },
   "devDependencies": {
     "@unocss/nuxt": "^0.64.1",
-    "sass": "^1.80.6",
+    "sass": "1.77.6",
     "typescript": "^5.6.3",
     "unocss": "^0.64.1",
     "vue-tsc": "^2.1.10"
-  },
-  "overrides": {
-    "vue": "latest"
   }
 }

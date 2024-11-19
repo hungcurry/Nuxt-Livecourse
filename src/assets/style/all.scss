@@ -8,9 +8,12 @@
 // -----------------
 // bootstrap
 // -----------------
-// @use 'config/bootstrap';
+@import 'config/bootstrap';
 
 // -----------------
 // base
 // -----------------
-@use 'config/base';
+@import 'config/variables';
+@import 'config/base';
+// 必須放最後
+@import 'bootstrap/scss/utilities/api';
