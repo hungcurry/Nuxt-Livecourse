@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import CardBtn from '@components/Card/Btn.vue'
 // 如果今天是元件的資料夾 建議改用import
 // 因為元件是一種封閉改念 會比較好閱讀
 import CardImg from '@components/Card/Img.vue'
-import CardTitle from '@components/Card/Title.vue'
 import CardPrice from '@components/Card/Price.vue'
-import CardBtn from '@components/Card/Btn.vue'
+import CardTitle from '@components/Card/Title.vue'
 
-const props = defineProps({
+defineProps({
   imageSrc: {
     type: String,
     required: true,
@@ -37,10 +37,10 @@ const props = defineProps({
 
 <template>
   <div class="product-card">
-    <CardImg :imageSrc="imageSrc" :altText="altText" />
+    <CardImg :image-src="imageSrc" :alt-text="altText" />
     <CardTitle :title="title" />
     <CardPrice :price="price" />
-    <CardBtn :buttonText="buttonText" />
+    <CardBtn :button-text="buttonText" />
   </div>
 </template>
 

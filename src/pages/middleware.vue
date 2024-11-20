@@ -18,9 +18,13 @@ definePageMeta({
 <template>
   <div class="container">
     <p>目前路由的路徑 - route.fullPath為 : {{ route.fullPath }}</p>
-    <h1 class="primary">Page: Middleware</h1>
-    <h2 class="title">前台Middleware</h2>
-    <hr />
+    <h1 class="primary">
+      Page: Middleware
+    </h1>
+    <h2 class="title">
+      前台Middleware
+    </h2>
+    <hr>
   </div>
 </template>
 

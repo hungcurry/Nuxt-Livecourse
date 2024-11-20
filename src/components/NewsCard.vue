@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineProps({
+  // eslint-disable-next-line vue/prop-name-casing
   _id: String,
   title: String,
   image: String,
@@ -12,10 +13,12 @@ defineProps({
 <template>
   <div class="card">
     <div class="card-image">
-      <img :src="image" :alt="title" />
+      <img :src="image" :alt="title">
     </div>
     <div class="card-body">
-      <h3 class="card-title">{{ title }}</h3>
+      <h3 class="card-title">
+        {{ title }}
+      </h3>
       <p class="card-description">
         {{ description }}
       </p>

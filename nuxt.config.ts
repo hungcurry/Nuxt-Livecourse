@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import path from 'path'
+import path from 'node:path'
+
 export default defineNuxtConfig({
   // compatibilityDate 屬性 : 將 Nuxt3 的功能和行為鎖定在 2024-04-03 之前的版本，
   // 避免之後 Nuxt3 新版本的寫法調整會影響到目前專案的運作
@@ -11,33 +12,43 @@ export default defineNuxtConfig({
     baseURL: '/Nuxt-Livecourse/',
     head: {
       title: '樂悠悠',
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
       htmlAttrs: {
         lang: 'zh-Hant-TW',
       },
       meta: [
-        { charset: 'utf-8' },
-        { 'http-equiv': 'X-UA-Compatible', content: 'IE=Edge' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'format-detection', content: 'telephone=no' },
+        { 'http-equiv': 'x-ua-compatible', 'content': 'IE=edge' },
+        { 'http-equiv': 'x-content-type-options', 'content': 'nosniff' },
+        { name: 'author', content: 'Freyja 旅館' },
+        { name: 'keywords', content: 'Freyja,Freyja 訂房,高雄旅遊,訂房,住宿,住宿預訂,四人房,雙人房,景觀房' },
+        { name: 'description', content: 'Freyja 旅館位於高雄，提供頂級的住宿體驗。享受絕美市景與高級設施，讓您的每一刻都充滿奢華與舒適。立即預訂，開啟難忘的住宿之旅！' },
         { name: 'theme-color', content: '#ffffff' },
-        {
-          hid: 'description',
-          name: 'description',
-          content:
-            '歡迎來到樂悠悠票務集市，在這裡，您可以輕鬆地享受現場活動的激动人心的時刻。我們的目標是讓每個人都能夠體驗娛樂的樂趣',
-        },
-        { property: 'og:title', content: '樂悠悠票務集市' },
-        {
-          property: 'og:description',
-          content: 'Experience More with Ticket Bazaar',
-        },
+        { name: 'robots', content: '"index, follow' },
+        { property: 'fb:app_id', content: '12345678' },
+        { property: 'og:locale', content: 'zh-TW' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:url', content: 'FB上的網址' },
-        { property: 'og:image', content: 'FB的圖片' },
+        { property: 'og:url', content: 'https://freyja.travel.com.tw' },
+        { property: 'og:title', content: 'Freyja | 高雄頂級旅館 - 提供奢華住宿體驗' },
+        { property: 'og:image', content: 'https://freyja.travel.com.tw/images/og-image.jpg' },
+        { property: 'og:description', content: 'Freyja 旅館位於高雄，提供頂級的住宿體驗。享受絕美市景與高級設施，讓您的每一刻都充滿奢華與舒適。立即預訂，開啟難忘的住宿之旅！' },
       ],
       link: [
         // { rel: 'icon', type: 'image/x-icon', href: 'path/to/your/design' },
         // { rel: 'apple-touch-icon', href: 'path/to/your/design' },
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.googleapis.com',
+        },
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.gstatic.com',
+          crossorigin: '',
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap',
+        },
       ],
     },
     // 頁面過渡動畫
@@ -85,7 +96,12 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['stores'],
   },
-  modules: [['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }], '@unocss/nuxt'],
+  eslint: {
+    config: {
+      standalone: false,
+    },
+  },
+  modules: [['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }], '@unocss/nuxt', '@nuxt/eslint'],
   // ===================
   // ... 未啟用 ...
   // ===================

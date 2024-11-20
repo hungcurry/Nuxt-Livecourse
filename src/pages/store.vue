@@ -6,12 +6,18 @@ const CountStore = useCountStore()
 <template>
   <div class="container">
     <p>目前路由的路徑 - route.fullPath為 : {{ route.fullPath }}</p>
-    <h1 class="primary">Page: Store</h1>
-    <h2 class="title">前台Store</h2>
-    <hr />
+    <h1 class="primary">
+      Page: Store
+    </h1>
+    <h2 class="title">
+      前台Store
+    </h2>
+    <hr>
 
     <p>CountStore.num: {{ CountStore.num }}</p>
-    <button @click="CountStore.addCount">addCount</button>
+    <button @click="CountStore.addCount">
+      addCount
+    </button>
   </div>
 </template>
 

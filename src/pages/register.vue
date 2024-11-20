@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { TUserRegister } from '@/types/dataTypes'
-import { TApiResponse, TApiUser } from '@/types/apiTypes'
+import type { TApiResponse, TApiUser } from '@/types/apiTypes'
+import type { TUserRegister } from '@/types/dataTypes'
+
 const { $swal } = useNuxtApp()
 // 使用 sweetAlert2 套件顯示訊息
 // $swal.fire({
@@ -36,7 +37,7 @@ const userRegisteObject = ref<TUserRegister>({
   },
 })
 // 註冊 https://nuxr3.zeabur.app/api/v1/user/signup
-const register = async () => {
+async function register() {
   try {
     const response = await $fetch<TApiResponse<TApiUser>>('/v1/user/signup', {
       method: 'POST',
@@ -64,11 +65,12 @@ const register = async () => {
         },
       }
     }
-  } catch (error: any) {
+  }
+  catch (error: unknown) {
     ;($swal as any).fire({
       position: 'center',
       icon: 'error',
-      title: error.response?._data?.message || '註冊失敗',
+      title: (error as any).response?._data?.message || '註冊失敗',
       showConfirmButton: false,
       timer: 1500,
     })
@@ -82,62 +84,70 @@ const register = async () => {
       <div class="row justify-content-md-center">
         <div class="col-12 col-md-11 col-lg-8 col-xl-7 col-xxl-6">
           <div class="bg-white p-4 p-md-5 rounded shadow-sm">
-            <h2 class="mb-4">會員註冊</h2>
+            <h2 class="mb-4">
+              會員註冊
+            </h2>
             <form>
               <div class="form-floating mb-4">
                 <label for="firstName">姓名 <span class="text-danger">*</span></label>
                 <input
+                  id="firstName"
+                  v-model="userRegisteObject.name"
                   type="text"
                   class="form-control"
-                  id="firstName"
                   placeholder="王小明"
                   required
-                  v-model="userRegisteObject.name"
-                />
+                >
               </div>
 
               <div class="form-floating mb-4">
                 <label for="email">信箱 <span class="text-danger">*</span></label>
                 <input
+                  id="email"
+                  v-model="userRegisteObject.email"
                   type="email"
                   class="form-control"
-                  id="email"
                   placeholder="example@gmail.com"
                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   required
-                  v-model="userRegisteObject.email"
-                />
+                >
               </div>
 
               <div class="form-floating mb-4">
                 <label for="password">密碼 <span class="text-danger">*</span></label>
                 <input
+                  id="password"
+                  v-model="userRegisteObject.password"
                   type="password"
                   class="form-control"
-                  id="password"
                   placeholder="請輸入 8 碼以上密碼"
                   pattern=".{8,}"
                   required
-                  v-model="userRegisteObject.password"
-                />
+                >
               </div>
 
               <div class="form-floating mb-4">
                 <label for="phone">電話</label>
                 <input
+                  id="phone"
+                  v-model="userRegisteObject.phone"
                   type="tel"
                   class="form-control"
-                  id="phone"
                   placeholder="0912345678"
                   pattern="(\+886|0)?9\d{8}|(\+886|0)?2\d{8}|\d{3}-\d{4}-\d{4}"
                   required
-                  v-model="userRegisteObject.phone"
-                />
+                >
               </div>
 
               <div class="form-floating mb-4">
                 <label for="dateInput">出生年月日</label>
-                <input type="date" class="form-control" id="dateInput" required v-model="userRegisteObject.birthday" />
+                <input
+                  id="dateInput"
+                  v-model="userRegisteObject.birthday"
+                  type="date"
+                  class="form-control"
+                  required
+                >
               </div>
 
               <div class="row">
@@ -145,32 +155,34 @@ const register = async () => {
                   <div class="form-floating mb-4">
                     <label for="zipcode">郵遞區號</label>
                     <input
+                      id="zipcode"
+                      v-model="userRegisteObject.address.zipcode"
                       type="text"
                       class="form-control"
-                      id="zipcode"
                       placeholder="100"
                       pattern="\d{3,}"
                       required
-                      v-model="userRegisteObject.address.zipcode"
-                    />
+                    >
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-floating mb-4">
                     <label for="address">詳細地址</label>
                     <input
+                      id="address"
+                      v-model="userRegisteObject.address.detail"
                       type="text"
                       class="form-control"
-                      id="address"
                       placeholder="台北市中正區重慶南路一段"
                       required
-                      v-model="userRegisteObject.address.detail"
-                    />
+                    >
                   </div>
                 </div>
               </div>
 
-              <button class="btn btn-lg btn-primary w-100" type="button" @click.prevent="register">註冊</button>
+              <button class="btn btn-lg btn-primary w-100" type="button" @click.prevent="register">
+                註冊
+              </button>
             </form>
           </div>
         </div>

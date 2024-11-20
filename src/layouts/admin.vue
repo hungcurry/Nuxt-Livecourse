@@ -16,7 +16,7 @@ header {
   color: #fff;
   padding: 1rem;
   text-align: center;
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
 }
 .template {
   display: flex;

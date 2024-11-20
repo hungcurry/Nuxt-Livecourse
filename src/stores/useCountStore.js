@@ -3,12 +3,12 @@
 // import { defineStore } from 'pinia';
 
 export const CountStore = defineStore('count', () => {
-  const num = ref(0);
+  const num = ref(0)
   const addCount = () => {
-    num.value++;
-  };
+    num.value++
+  }
   return {
     num,
     addCount,
-  };
-});
+  }
+})

@@ -1,16 +1,15 @@
-<script setup>
-// import SlotBack from '@/components/Slots/SlotBack.vue'
-const state = ref(0)
-const message = ref('')
+<script setup lang="ts">
 const props = defineProps({
   error: Object,
 })
+// import SlotBack from '@/components/Slots/SlotBack.vue'
+const state = ref(0)
+const message = ref('')
 const { error } = toRefs(props)
 // 打 http://localhost:3000/Nuxt-Livecourse/api/error 會觸發錯誤
-console.log('全域error', error.value)
-
-const errorCode = Number(error.value.statusCode)
-const errorMessage = error.value.statusMessage
+// 添加錯誤檢查
+const errorCode = error?.value?.statusCode ? Number(error.value.statusCode) : 0
+const errorMessage = error?.value?.statusMessage || ''
 
 if (errorCode === 500) {
   state.value = errorCode
@@ -20,8 +19,9 @@ if (errorCode === 400) {
   state.value = errorCode
   message.value = errorMessage
 }
-const handleError = () => clearError({ redirect: '/' })
+// const handleError = () => clearError({ redirect: '/' })
 </script>
+
 <template>
   <NuxtLayout>
     <!-- 錯誤處理 -->
@@ -30,4 +30,5 @@ const handleError = () => clearError({ redirect: '/' })
     <!-- <slot-back @click="handleError">回首頁</slot-back> -->
   </NuxtLayout>
 </template>
+
 <style lang="scss" scoped></style>

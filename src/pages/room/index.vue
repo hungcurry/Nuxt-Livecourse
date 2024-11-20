@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { TApiRoomItem } from '@/types/apiTypes'
+import type { TApiRoomItem } from '@/types/apiTypes'
+
 const route = useRoute()
 const router = useRouter()
 const apiUrl = 'https://nuxr3.zeabur.app/api/v1/rooms'
 const { data: roomsList, FetchInit } = useCustomFetch<TApiRoomItem[]>()
 
-const handleClickRoom = (id: string) => {
+function handleClickRoom(id: string) {
   router.push({
     path: `/room/${id}`,
   })
@@ -21,12 +22,16 @@ onMounted(async () => {
     <h2>房型 index {{ route.fullPath }}</h2>
     <div class="container mt-4">
       <div class="row justify-content-center gy-3">
-        <div class="col-8 col-md-6 col-lg-3" v-for="room in roomsList" :key="room._id">
+        <div v-for="room in roomsList" :key="room._id" class="col-8 col-md-6 col-lg-3">
           <div class="card h-100 shadow-sm" @click="handleClickRoom(room._id)">
-            <img :src="room.imageUrl" class="card-img-top" alt="Room Image" />
+            <img :src="room.imageUrl" class="card-img-top" alt="Room Image">
             <div class="card-body d-flex flex-column">
-              <h3 class="card-title">{{ room.name }}</h3>
-              <p class="card-text flex-grow-1">{{ room.description }}</p>
+              <h3 class="card-title">
+                {{ room.name }}
+              </h3>
+              <p class="card-text flex-grow-1">
+                {{ room.description }}
+              </p>
               <ul class="list-unstyled">
                 <li><strong>面積:</strong> {{ room.areaInfo }}</li>
                 <li><strong>床型:</strong> {{ room.bedInfo }}</li>

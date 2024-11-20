@@ -1,21 +1,21 @@
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   imageSrc: {
     type: String,
     required: true,
-    default: 'no image'
+    default: 'no image',
   },
   altText: {
     type: String,
     required: true,
-    default: 'no altText'
+    default: 'no altText',
   },
 })
 </script>
 
 <template>
   <div class="product-image">
-    <img :src="imageSrc" :alt="altText" />
+    <img :src="imageSrc" :alt="altText">
   </div>
 </template>
 

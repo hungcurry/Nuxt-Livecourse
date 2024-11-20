@@ -1,16 +1,16 @@
 {
   "extends": "../../.nuxt/tsconfig.server.json",
   "compilerOptions": {
+    "target": "ESNext",
+    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "target": "ESNext",
-    "strict": true,
-    "allowJs": true,
-    "noEmit": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
     "types": ["node"],
-    "baseUrl": "."
+    "allowJs": true,
+    "strict": true,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["./**/*"]
 }

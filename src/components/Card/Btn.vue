@@ -1,15 +1,17 @@
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   buttonText: {
     type: String,
     required: true,
-    default: 'no buttonText'
+    default: 'no buttonText',
   },
 })
 </script>
 
 <template>
-  <button class="product-button">{{ buttonText }}</button>
+  <button class="product-button">
+    {{ buttonText }}
+  </button>
 </template>
 
 <style scoped lang="scss">
@@ -17,7 +19,7 @@ const props = defineProps({
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 0 0 8px 8px;

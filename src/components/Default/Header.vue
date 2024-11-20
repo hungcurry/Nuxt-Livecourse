@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { TMenuItem } from '@/types/menuTypes'
+import type { TMenuItem } from '@/types/menuTypes'
 // <NuxtLink to="/">index</NuxtLink>
 // <NuxtLink to="/async">async</NuxtLink>
 const menuList: TMenuItem[] = [
   // 前台
   { label: '前台index', path: '/' },
   // { label: '嵌套Router', path: '/router' },
-  { label: '前台bootstrap', path: '/bootstrap' },
+  // { label: '前台bootstrap', path: '/bootstrap' },
   // { label: '前台Card', path: '/card' },
   // ----資料夾-----
   // { label: '前台Store', path: '/store' },
@@ -16,7 +16,7 @@ const menuList: TMenuItem[] = [
   // { label: '前台Meta', path: '/meta' },
   // ----有api-----
   // { label: '前台Fetch', path: '/fetch' },
-  { label: '前台Room', path: '/room' },
+  // { label: '前台Room', path: '/room' },
   // { label: '前台AsyncData', path: '/async-data' },
   // { label: 'Register', path: '/register' },
 
@@ -29,7 +29,12 @@ const menuList: TMenuItem[] = [
 <template>
   <header>
     <nav class="d-flex items-center justify-center gap-2">
-      <NuxtLink v-for="(item, idx) in menuList" :key="idx" :to="item.path" :title="item.label">
+      <NuxtLink
+        v-for="(item, idx) in menuList"
+        :key="idx"
+        :to="item.path"
+        :title="item.label"
+      >
         <p>{{ item.label }} /</p>
       </NuxtLink>
       <!-- 外部連結 使用 target="_blank" external -->

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   active: {
     type: Boolean,
     required: true,
@@ -9,9 +9,9 @@ const props = defineProps({
 
 <template>
   <!-- <div class="loading" v-if="active">Loading...</div> -->
-  <div class="loadingBox" v-if="active">
+  <div v-if="active" class="loadingBox">
     <div class="loading">
-      <div></div>
+      <div />
     </div>
   </div>
 </template>

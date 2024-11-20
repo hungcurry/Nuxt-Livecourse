@@ -1,15 +1,17 @@
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true,
-    default: 'no title'
+    default: 'no title',
   },
 })
 </script>
 
 <template>
-  <h2 class="product-title">{{ title }}</h2>
+  <h2 class="product-title">
+    {{ title }}
+  </h2>
 </template>
 
 <style scoped lang="scss">

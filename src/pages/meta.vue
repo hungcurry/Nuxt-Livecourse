@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const route = useRoute()
 
 // useHead({
@@ -58,9 +58,13 @@ const route = useRoute()
 <template>
   <div class="container">
     <p>目前路由的路徑 - route.fullPath為 : {{ route.fullPath }}</p>
-    <h1 class="primary">Page: Meta</h1>
-    <h2 class="title">前台Meta</h2>
-    <hr />
+    <h1 class="primary">
+      Page: Meta
+    </h1>
+    <h2 class="title">
+      前台Meta
+    </h2>
+    <hr>
   </div>
 </template>
 

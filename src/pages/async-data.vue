@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { TApiNewsItem, TApiResponse } from '@/types/apiTypes'
+import type { TApiNewsItem, TApiResponse } from '@/types/apiTypes'
+
 const route = useRoute()
 const apiUrl = 'https://nuxr3.zeabur.app/api/v1/home/news/'
 const ary = ref<TApiNewsItem[]>([])
@@ -24,16 +25,24 @@ ary.value = data.value?.result || []
 <template>
   <div class="container">
     <p>目前路由的路徑 - route.fullPath為 : {{ route.fullPath }}</p>
-    <h1 class="primary">Page: AsyncData</h1>
-    <h2 class="title">前台AsyncData</h2>
-    <hr />
+    <h1 class="primary">
+      Page: AsyncData
+    </h1>
+    <h2 class="title">
+      前台AsyncData
+    </h2>
+    <hr>
 
-    <div v-if="status === 'pending'">加载中...</div>
-    <div v-else-if="error">加载失败: {{ error }}</div>
+    <div v-if="status === 'pending'">
+      加载中...
+    </div>
+    <div v-else-if="error">
+      加载失败: {{ error }}
+    </div>
     <ul v-else>
       <li v-for="item in ary" :key="item._id">
         <h3>{{ item.title }}</h3>
-        <img :src="item.image" alt="" />
+        <img :src="item.image" alt="">
       </li>
     </ul>
   </div>

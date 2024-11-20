@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { TApiNewsItem } from '@/types/apiTypes'
+import type { TApiNewsItem } from '@/types/apiTypes'
+
 const route = useRoute()
 const apiUrl = 'https://nuxr3.zeabur.app/api/v1/home/news/'
 const { data, isLoading, FetchInit } = useCustomFetch<TApiNewsItem[]>()
@@ -13,9 +14,13 @@ onMounted(async () => {
 <template>
   <div class="container">
     <p>目前路由的路徑 - route.fullPath為 : {{ route.fullPath }}</p>
-    <h1 class="primary">Page: Fetch</h1>
-    <h2 class="title">前台Fetch</h2>
-    <hr />
+    <h1 class="primary">
+      Page: Fetch
+    </h1>
+    <h2 class="title">
+      前台Fetch
+    </h2>
+    <hr>
 
     <div>
       <ClientOnly>

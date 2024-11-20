@@ -2,7 +2,8 @@
 // 串接 API 取得房型詳細資料
 // API path : https://nuxr3.zeabur.app/api/v1/rooms/{id}
 // 將資料渲染至下方的 div.room-page 區塊
-import { TApiRoomItem } from '@/types/apiTypes'
+import type { TApiRoomItem } from '@/types/apiTypes'
+
 const router = useRouter()
 const route = useRoute()
 const roomId = route.params.id
@@ -17,21 +18,34 @@ onMounted(async () => {
 
 <template>
   <div>
-    <h2 style="text-align: center">房型詳細頁面</h2>
+    <h2 style="text-align: center">
+      房型詳細頁面
+    </h2>
     <div class="container">
-      <button @click="router.go(-1)">回上一頁</button>
+      <button @click="router.go(-1)">
+        回上一頁
+      </button>
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <div class="room-page" v-if="room">
+          <div v-if="room" class="room-page">
             <div class="room-header">
-              <h1 class="room-name">{{ room.name }}</h1>
-              <p class="room-description">{{ room.description }}</p>
+              <h1 class="room-name">
+                {{ room.name }}
+              </h1>
+              <p class="room-description">
+                {{ room.description }}
+              </p>
             </div>
 
             <div class="room-gallery">
-              <img :src="room.imageUrl" :alt="room.name" class="room-main-image" />
+              <img :src="room.imageUrl" :alt="room.name" class="room-main-image">
               <div class="room-image-list">
-                <img v-for="imageUrl in room.imageUrlList" :src="imageUrl" alt="圖片" />
+                <img
+                  v-for="imageUrl in room.imageUrlList"
+                  :key="imageUrl"
+                  :src="imageUrl"
+                  :alt="room.name"
+                >
               </div>
             </div>
 
@@ -46,21 +60,21 @@ onMounted(async () => {
 
               <div class="info-block">
                 <h2>房間配置</h2>
-                <ul v-for="item in room.layoutInfo">
+                <ul v-for="item in room.layoutInfo" :key="item.title">
                   <li>{{ item.title }}</li>
                 </ul>
               </div>
 
               <div class="info-block">
                 <h2>房內設施</h2>
-                <ul v-for="item in room.amenityInfo">
+                <ul v-for="item in room.amenityInfo" :key="item.title">
                   <li>{{ item.title }}</li>
                 </ul>
               </div>
 
               <div class="info-block">
                 <h2>客房備品</h2>
-                <ul v-for="item in room.amenityInfo">
+                <ul v-for="item in room.amenityInfo" :key="item.title">
                   <li>{{ item.title }}</li>
                 </ul>
               </div>
@@ -71,12 +85,22 @@ onMounted(async () => {
         <!-- 第2層路由 下方頁面 有缺陷會跳回畫面上方 -->
         <div class="col-md-6">
           <nav>
-            <h3 style="text-align: center">第2層路由 下方頁面</h3>
-            <hr />
-            <NuxtLink :to="`/room/${route.params.id}`"> 房型首頁 </NuxtLink>
-            <NuxtLink :to="`/room/${route.params.id}/about`">房型介紹</NuxtLink>
-            <NuxtLink :to="`/room/${route.params.id}/list`"> 房型列表 </NuxtLink>
-            <NuxtLink :to="`/room/${route.params.id}/feedbacks`">評價回饋</NuxtLink>
+            <h3 style="text-align: center">
+              第2層路由 下方頁面
+            </h3>
+            <hr>
+            <NuxtLink :to="`/room/${route.params.id}`">
+              房型首頁
+            </NuxtLink>
+            <NuxtLink :to="`/room/${route.params.id}/about`">
+              房型介紹
+            </NuxtLink>
+            <NuxtLink :to="`/room/${route.params.id}/list`">
+              房型列表
+            </NuxtLink>
+            <NuxtLink :to="`/room/${route.params.id}/feedbacks`">
+              評價回饋
+            </NuxtLink>
           </nav>
           <NuxtPage />
         </div>
