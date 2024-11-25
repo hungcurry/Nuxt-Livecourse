@@ -1,5 +1,16 @@
 <script setup lang="ts">
 const route = useRoute()
+
+const config = useRuntimeConfig()
+console.log(config)
+console.log(config.public)
+
+if (import.meta.server) {
+  console.log('server token:', config.TOKEN)
+}
+
+console.log('ENV=>', process.env.VITE_ENV)
+console.log('WEB_URL=>', process.env.VITE_WEB_URL)
 </script>
 
 <template>

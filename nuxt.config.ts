@@ -1,5 +1,25 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 import path from 'node:path'
+import process from 'node:process'
+import dotenv from 'dotenv'
+
+let envFile = '.env.dev' // 預設為開發環境
+
+// 根據 APP_ENV 決定對應的 .env 檔案
+switch (process.env.APP_ENV) {
+  case 'prod':
+    envFile = '.env.prod'
+    break
+  case 'test':
+    envFile = '.env.test'
+    break
+  default:
+    envFile = '.env.dev'
+    break
+}
+// 載入相對應的 .env 檔案
+dotenv.config({ path: path.resolve(__dirname, envFile) })
 
 export default defineNuxtConfig({
   // compatibilityDate 屬性 : 將 Nuxt3 的功能和行為鎖定在 2024-04-03 之前的版本，
@@ -80,6 +100,10 @@ export default defineNuxtConfig({
       },
     },
     plugins: [],
+    define: {
+      // vite 環境變數(全域)
+      'process.env': process.env,
+    },
   },
   // 啟用 TypeScript 類型檢查
   typescript: {
@@ -90,6 +114,15 @@ export default defineNuxtConfig({
     options: {
       linkActiveClass: 'active',
       linkExactActiveClass: 'active',
+    },
+  },
+  // 設定 nuxt環境變數runtimeConfig
+  runtimeConfig: {
+    // 放外面的 只有server抓的到 隱密性高
+    TOKEN: process.env.TOKEN,
+    // 放在 public client 和 server 抓的到
+    public: {
+      API_URL: process.env.API_URL,
     },
   },
   // Auto-import pinia
