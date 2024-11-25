@@ -1,4 +1,4 @@
-interface TMenuItem {
+type TMenuItem = {
   label: string
   path: string
 }

@@ -1,4 +1,4 @@
-interface TUserRegister {
+type TUserRegister = {
   name: string
   email: string
   password: string

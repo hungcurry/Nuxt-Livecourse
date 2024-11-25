@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev:dev": "cross-env APP_ENV=dev nuxt dev",
+    "dev": "cross-env APP_ENV=dev nuxt dev",
     "dev:test": "cross-env APP_ENV=test nuxt dev",
     "dev:prod": "cross-env APP_ENV=prod nuxt dev",
     "build": "cross-env APP_ENV=prod nuxt build",
