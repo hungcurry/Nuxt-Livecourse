@@ -2,17 +2,48 @@
 // 串接 API 取得房型詳細資料
 // API path : https://nuxr3.zeabur.app/api/v1/rooms/{id}
 // 將資料渲染至下方的 div.room-page 區塊
-import type { TApiRoomItem } from '@/types/apiTypes'
+import type { TApiResponse, TApiRoomItem } from '@/types/apiTypes'
 
 const router = useRouter()
 const route = useRoute()
 const roomId = route.params.id
-const apiUrl = `https://nuxr3.zeabur.app/api/v1/rooms/${roomId}`
-const { data: room, FetchInit } = useCustomFetch<TApiRoomItem>()
 
-onMounted(async () => {
-  await FetchInit(apiUrl)
-  console.log('room', room.value)
+// CSR
+// const apiUrl = `https://nuxr3.zeabur.app/api/v1/rooms/${roomId}`
+// const { data: room, FetchInit } = useCustomFetch<TApiRoomItem>()
+
+// onMounted(async () => {
+//   await FetchInit(apiUrl)
+//   console.log('room', room.value)
+// })
+
+// SSR
+const { data: room } = await useFetch(`/rooms/${roomId}`, {
+  baseURL: 'https://nuxr3.zeabur.app/api/v1',
+  transform: (response: TApiResponse<TApiRoomItem>) => {
+    const { result } = response
+    return result
+  },
+  onResponseError({ response }) {
+    const { message } = response._data
+    console.error('Error:', message)
+    router.push('/')
+  },
+})
+// console.log(room.value)
+// 使用 useSeoMeta  將 room 的資訊寫入 SEO Meta
+useSeoMeta({
+  title: () => room.value?.name || '',
+  titleTemplate: title => `Freyja | ${title}`,
+  description: () => room.value?.description || '',
+  ogTitle: () => `Freyja | ${room.value?.name || ''}`,
+  ogDescription: () => room.value?.description || '',
+  ogImage: () => room.value?.imageUrl || '',
+  ogUrl: () => room.value ? `https://freyja.travel.com.tw/room/${room.value._id}` : '',
+  twitterCard: 'summary_large_image',
+  twitterTitle: () => `Freyja | ${room.value?.name || ''}`,
+  twitterDescription: () => room.value?.description || '',
+  twitterImage: () => room.value?.imageUrl || '',
 })
 </script>
 

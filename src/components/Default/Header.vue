@@ -6,10 +6,10 @@ const menuList: TMenuItem[] = [
   // 前台
   { label: '前台index', path: '/' },
   // { label: '嵌套Router', path: '/router' },
-  // { label: '前台bootstrap', path: '/bootstrap' },
+  { label: '前台bootstrap', path: '/bootstrap' },
   // { label: '前台Card', path: '/card' },
   // { label: '前台env', path: '/env' },
-  { label: '前台proxy', path: '/proxy' },
+  // { label: '前台proxy', path: '/proxy' },
   // ----資料夾-----
   // { label: '前台Store', path: '/store' },
   // { label: '前台Plugin', path: '/plugin' },
