@@ -4,8 +4,8 @@ import path from 'node:path'
 import process from 'node:process'
 import dotenv from 'dotenv'
 
+const viteApiPath = process.env.VITE_API || '/api3'
 let envFile = '.env.dev' // 預設為開發環境
-
 // 根據 APP_ENV 決定對應的 .env 檔案
 switch (process.env.APP_ENV) {
   case 'prod':
@@ -18,7 +18,6 @@ switch (process.env.APP_ENV) {
     envFile = '.env.dev'
     break
 }
-// 載入相對應的 .env 檔案
 dotenv.config({ path: path.resolve(__dirname, envFile) })
 
 export default defineNuxtConfig({
@@ -29,6 +28,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   // ------------------ add ----------------------
   app: {
+    // 應用路由基礎路徑
     baseURL: '/Nuxt-Livecourse/',
     head: {
       title: '樂悠悠',
@@ -103,6 +103,22 @@ export default defineNuxtConfig({
     define: {
       // vite 環境變數(全域)
       'process.env': process.env,
+    },
+    server: {
+      proxy: {
+        [`/Nuxt-Livecourse/API${viteApiPath}`]: {
+          target: 'https://www.vscinemas.com.tw/',
+          changeOrigin: true,
+          rewrite: (path) => {
+            // console.log('原始路徑:', path)
+            // ~ /Nuxt-Livecourse/API/api3/VsWeb/api/GetLstDicCinema
+            const rewrittenPath = path.replace(new RegExp(`^/Nuxt-Livecourse/API${viteApiPath}`), '')
+            // console.log('重寫後路徑:', rewrittenPath)
+            // ~ /VsWeb/api/GetLstDicCinema
+            return rewrittenPath
+          },
+        },
+      },
     },
   },
   // 啟用 TypeScript 類型檢查
