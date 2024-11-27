@@ -1,12 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
+import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import dotenv from 'dotenv'
 
 const viteApiPath = process.env.VITE_API || '/api3'
-let envFile = '.env.dev' // 預設為開發環境
-// 根據 APP_ENV 決定對應的 .env 檔案
+// 定義要掃描的資料夾名稱
+const pluginDirs = ['provide', 'directive', 'use']
+// 預設為開發環境
+let envFile = '.env.dev'
 switch (process.env.APP_ENV) {
   case 'prod':
     envFile = '.env.prod'
@@ -21,7 +23,8 @@ switch (process.env.APP_ENV) {
 dotenv.config({ path: path.resolve(__dirname, envFile) })
 
 export default defineNuxtConfig({
-  // compatibilityDate 屬性 : 將 Nuxt3 的功能和行為鎖定在 2024-04-03 之前的版本，
+  // compatibilityDate 屬性 :
+  // 將 Nuxt3 的功能和行為鎖定在 2024-04-03 之前的版本，
   // 避免之後 Nuxt3 新版本的寫法調整會影響到目前專案的運作
   compatibilityDate: '2024-04-03',
   // 啟用 Nuxt DevTools 開發工具
@@ -157,7 +160,30 @@ export default defineNuxtConfig({
       standalone: false,
     },
   },
-  modules: [['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }], '@unocss/nuxt', '@nuxt/eslint'],
+  modules: [
+    [
+      '@pinia/nuxt',
+      { autoImports: ['defineStore', 'acceptHMRUpdate'] },
+    ],
+    '@unocss/nuxt',
+    '@nuxt/eslint',
+  ],
+  // 掃描 plugins 資料夾
+  plugins: [
+    // 遍歷每個資料夾，載入所有 .js 或 .ts 檔案
+    ...pluginDirs.flatMap((dir) => {
+      const dirPath = path.resolve(__dirname, `src/plugins/${dir}`)
+      if (!fs.existsSync(dirPath)) {
+        // console.warn(`資料夾不存在: ${dirPath}`)
+        return [] // 如果資料夾不存在，跳過該資料夾
+      }
+      return fs
+        .readdirSync(dirPath) // 讀取資料夾內容
+        .filter(file => file.endsWith('.js') || file.endsWith('.ts'))
+        // 生成 Nuxt 插件路徑
+        .map(file => `@/plugins/${dir}/${file}`)
+    }),
+  ],
   // ===================
   // ... 未啟用 ...
   // ===================
