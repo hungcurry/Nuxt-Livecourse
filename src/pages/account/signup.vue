@@ -44,7 +44,7 @@ async function handelRegister() {
 
     if (response.status) {
       await successAlert('註冊成功')
-      await navigateTo('/login')
+      await navigateTo('/account/login')
     }
   }
   catch (error: unknown) {

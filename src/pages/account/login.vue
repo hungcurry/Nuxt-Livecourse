@@ -60,6 +60,7 @@ async function handelLogin() {
             </h2>
             <form>
               <div class="input-group mb-4">
+                <label for="email">信箱 <span class="text-danger">*</span></label>
                 <input
                   id="email"
                   v-model="userLoginObject.email"
@@ -69,10 +70,10 @@ async function handelLogin() {
                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   required
                 >
-                <label for="email">信箱 <span class="text-danger">*</span></label>
               </div>
 
               <div class="input-group mb-4">
+                <label for="password">密碼 <span class="text-danger">*</span></label>
                 <input
                   id="password"
                   v-model="userLoginObject.password"
@@ -82,7 +83,6 @@ async function handelLogin() {
                   pattern=".{8,}"
                   required
                 >
-                <label for="password">密碼 <span class="text-danger">*</span></label>
               </div>
               <button
                 class="btn btn-lg btn-primary w-100"
