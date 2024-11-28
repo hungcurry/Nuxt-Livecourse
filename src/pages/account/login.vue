@@ -32,6 +32,7 @@ async function handelLogin() {
       const auth = useCookie('Freyja-auth', { maxAge: 600 })
       auth.value = token
       await successAlert('登入成功')
+      await navigateTo('/account/orders')
     }
   }
   catch (error: unknown) {

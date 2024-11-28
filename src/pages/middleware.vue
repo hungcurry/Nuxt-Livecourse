@@ -1,6 +1,15 @@
 <script setup lang="ts">
 const route = useRoute()
 
+console.log('before middleware')
+definePageMeta({
+  middleware: (to, from) => {
+    // middleware 屬性是函式
+    console.log('index=>', { to, from })
+  },
+})
+console.log('after middleware')
+
 // 1.匿名 route middleware
 // definePageMeta({
 //   middleware: (to, from) => {
@@ -9,10 +18,10 @@ const route = useRoute()
 // })
 
 // 2.具名 route middleware
-definePageMeta({
-  // 這裡名稱 要跟 auth.js一樣
-  middleware: ['auth'],
-})
+// definePageMeta({
+//   // 這裡名稱 要跟 auth.js一樣
+//   middleware: ['auth'],
+// })
 </script>
 
 <template>

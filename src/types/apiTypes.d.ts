@@ -64,4 +64,8 @@ type TApiUser = {
   updatedAt: string
   id: string
 }
-export type { TApiNewsItem, TApiResponse, TApiRoomItem, TApiUser, TUserRegister }
+type TApiAuth = {
+  status: boolean
+  token: string
+}
+export type { TApiAuth, TApiNewsItem, TApiResponse, TApiRoomItem, TApiUser, TUserRegister }
