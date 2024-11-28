@@ -2,17 +2,7 @@
 import type { TApiResponse, TApiUser } from '@/types/apiTypes'
 import type { TUserRegister } from '@/types/dataTypes'
 
-const { $swal } = useNuxtApp()
-// 使用 sweetAlert2 套件顯示訊息
-// $swal.fire({
-//   position: "center",
-//   icon: ...,
-//   title: ...,
-//   showConfirmButton: false,
-//   timer: 1500,
-// });
-
-// 表單格式
+// #region 表單格式
 // type TUserRegister = {
 //   name: string
 //   email: string
@@ -24,7 +14,9 @@ const { $swal } = useNuxtApp()
 //     detail: string
 //   }
 // }
-
+// #endregion
+const { successAlert, errorAlert } = useAlert()
+const isEnabled = ref(false)
 const userRegisteObject = ref<TUserRegister>({
   name: '',
   email: '',
@@ -36,50 +28,49 @@ const userRegisteObject = ref<TUserRegister>({
     detail: '',
   },
 })
-// 註冊 https://nuxr3.zeabur.app/api/v1/user/signup
-async function register() {
+async function handelRegister() {
+  // 註冊 https://nuxr3.zeabur.app/api/v1/user/signup
+  // ooopp42+5@gmail.com
+  // Zx26473564
+
+  isEnabled.value = true
   try {
     const response = await $fetch<TApiResponse<TApiUser>>('/v1/user/signup', {
+      baseURL: 'https://nuxr3.zeabur.app/api',
       method: 'POST',
       body: userRegisteObject.value,
-      baseURL: 'https://nuxr3.zeabur.app/api',
     })
-    console.log('response', response)
+    console.log('註冊-response', response)
+
     if (response.status) {
-      ;($swal as any).fire({
-        position: 'center',
-        icon: 'success',
-        title: '註冊成功',
-        showConfirmButton: false,
-        timer: 1500,
-      })
-      userRegisteObject.value = {
-        name: '',
-        email: '',
-        password: '',
-        phone: '',
-        birthday: '',
-        address: {
-          zipcode: '',
-          detail: '',
-        },
-      }
+      await successAlert('註冊成功')
+      await navigateTo('/login')
     }
   }
   catch (error: unknown) {
-    ;($swal as any).fire({
-      position: 'center',
-      icon: 'error',
-      title: (error as any).response?._data?.message || '註冊失敗',
-      showConfirmButton: false,
-      timer: 1500,
-    })
+    console.log('error', (error as any).response?._data)
+    const errorMessage = (error as any).response?._data?.message || '註冊失敗'
+    errorAlert(errorMessage)
+  }
+  finally {
+    isEnabled.value = false // 解鎖按鈕
+    // userRegisteObject.value = {
+    //   name: '',
+    //   email: '',
+    //   password: '',
+    //   phone: '',
+    //   birthday: '',
+    //   address: {
+    //     zipcode: '',
+    //     detail: '',
+    //   },
+    // }
   }
 }
 </script>
 
 <template>
-  <div class="bg-light py-3 py-md-5 h-full">
+  <div class="py-3 py-md-5">
     <div class="container h-full">
       <div class="row justify-content-md-center">
         <div class="col-12 col-md-11 col-lg-8 col-xl-7 col-xxl-6">
@@ -88,7 +79,7 @@ async function register() {
               會員註冊
             </h2>
             <form>
-              <div class="form-floating mb-4">
+              <div class="input-group mb-4">
                 <label for="firstName">姓名 <span class="text-danger">*</span></label>
                 <input
                   id="firstName"
@@ -100,7 +91,7 @@ async function register() {
                 >
               </div>
 
-              <div class="form-floating mb-4">
+              <div class="input-group mb-4">
                 <label for="email">信箱 <span class="text-danger">*</span></label>
                 <input
                   id="email"
@@ -113,7 +104,7 @@ async function register() {
                 >
               </div>
 
-              <div class="form-floating mb-4">
+              <div class="input-group mb-4">
                 <label for="password">密碼 <span class="text-danger">*</span></label>
                 <input
                   id="password"
@@ -126,7 +117,7 @@ async function register() {
                 >
               </div>
 
-              <div class="form-floating mb-4">
+              <div class="input-group mb-4">
                 <label for="phone">電話</label>
                 <input
                   id="phone"
@@ -139,20 +130,21 @@ async function register() {
                 >
               </div>
 
-              <div class="form-floating mb-4">
+              <div class="input-group mb-4">
                 <label for="dateInput">出生年月日</label>
                 <input
                   id="dateInput"
                   v-model="userRegisteObject.birthday"
                   type="date"
                   class="form-control"
+                  style="appearance: none; -webkit-appearance: none; -moz-appearance: none;"
                   required
                 >
               </div>
 
               <div class="row">
                 <div class="col-md-6">
-                  <div class="form-floating mb-4">
+                  <div class="input-group mb-4">
                     <label for="zipcode">郵遞區號</label>
                     <input
                       id="zipcode"
@@ -166,7 +158,7 @@ async function register() {
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <div class="form-floating mb-4">
+                  <div class="input-group mb-4">
                     <label for="address">詳細地址</label>
                     <input
                       id="address"
@@ -180,7 +172,12 @@ async function register() {
                 </div>
               </div>
 
-              <button class="btn btn-lg btn-primary w-100" type="button" @click.prevent="register">
+              <button
+                class="btn btn-lg btn-primary w-100"
+                :disabled="isEnabled"
+                type="button"
+                @click.prevent="handelRegister"
+              >
                 註冊
               </button>
             </form>
@@ -191,7 +188,7 @@ async function register() {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .form-control {
   &:focus {
     border-color: $primary;

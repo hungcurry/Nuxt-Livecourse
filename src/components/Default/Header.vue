@@ -20,7 +20,8 @@ const menuList: TMenuItem[] = [
   // { label: '前台Fetch', path: '/fetch' },
   // { label: '前台Room', path: '/room' },
   // { label: '前台AsyncData', path: '/async-data' },
-  // { label: 'Register', path: '/register' },
+  { label: 'Register', path: '/register' },
+  { label: 'Login', path: '/login' },
 
   // admin
   // { label: '後台首頁', path: '/admin' },
