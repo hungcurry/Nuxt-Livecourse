@@ -13,11 +13,20 @@ type TUserRegister = {
     detail: string
   }
 }
-type TAddress = {
-  zipcode: number
-  detail: string
-  county: string
-  city: string
+type TBookingResult = {
+  name: string
+  user: {
+    name: string
+    phone: string
+  }
+  areaInfo: string
+  bedInfo: string
+  layoutInfo: {
+    title: string
+  }[]
+  facilityInfo: {
+    title: string
+  }[]
 }
 // ===================
 // ... API 回應型別 ...
@@ -42,30 +51,34 @@ type TApiRoomItem = {
   _id: string
   name: string
   description: string
+  imageUrl: string
+  imageUrlList: string[]
   areaInfo: string
   bedInfo: string
   maxPeople: number
   price: number
-  imageUrl: string
-  imageUrlList: string[]
+  status: number
   layoutInfo: TRoomFeature[]
   facilityInfo: TRoomFeature[]
   amenityInfo: TRoomFeature[]
+  createdAt: string
+  updatedAt: string
 }
 type TApiUser = {
   name: string
   email: string
   phone: string
-  birthday: string
-  address: TAddress
-  verificationToken: string
-  _id: string
-  createdAt: string
-  updatedAt: string
-  id: string
+  birthday?: string
+  address: {
+    zipcode: number
+    county: string
+    district: string
+    detail: string
+  }
 }
 type TApiAuth = {
   status: boolean
   token: string
 }
-export type { TApiAuth, TApiNewsItem, TApiResponse, TApiRoomItem, TApiUser, TUserRegister }
+
+export type { TApiAuth, TApiNewsItem, TApiResponse, TApiRoomItem, TApiUser, TBookingResult, TUserRegister }

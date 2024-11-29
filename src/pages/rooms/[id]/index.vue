@@ -45,6 +45,10 @@ useSeoMeta({
   twitterDescription: () => room.value?.description || '',
   twitterImage: () => room.value?.imageUrl || '',
 })
+// 選取要預訂的房型
+function handleReservation() {
+  navigateTo(`/rooms/${roomId}/booking`)
+}
 </script>
 
 <template>
@@ -57,7 +61,7 @@ useSeoMeta({
         回上一頁
       </button>
       <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div v-if="room" class="room-page">
             <div class="room-header">
               <h1 class="room-name">
@@ -79,7 +83,11 @@ useSeoMeta({
                 >
               </div>
             </div>
+          </div>
+        </div>
 
+        <div class="col-md-6">
+          <div v-if="room" class="room-page">
             <div class="room-info">
               <div class="info-block">
                 <h2>房間資訊</h2>
@@ -113,28 +121,47 @@ useSeoMeta({
           </div>
         </div>
 
-        <!-- 第2層路由 下方頁面 有缺陷會跳回畫面上方 -->
         <div class="col-md-6">
+          <div v-if="room" class="room-page">
+            <div class="room-info">
+              <div class="info-block">
+                <h2>
+                  價格詳情
+                </h2>
+                <button
+                  type="button"
+                  class="btn btn-primary stretched-link"
+                  @click="handleReservation"
+                >
+                  我要預訂
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第2層路由 下方頁面 有缺陷會跳回畫面上方 -->
+        <!-- <div class="col-md-6">
           <nav>
             <h3 style="text-align: center">
               第2層路由 下方頁面
             </h3>
             <hr>
-            <NuxtLink :to="`/room/${route.params.id}`">
+            <NuxtLink :to="`/rooms/${route.params.id}`">
               房型首頁
             </NuxtLink>
-            <NuxtLink :to="`/room/${route.params.id}/about`">
+            <NuxtLink :to="`/rooms/${route.params.id}/about`">
               房型介紹
             </NuxtLink>
-            <NuxtLink :to="`/room/${route.params.id}/list`">
+            <NuxtLink :to="`/rooms/${route.params.id}/list`">
               房型列表
             </NuxtLink>
-            <NuxtLink :to="`/room/${route.params.id}/feedbacks`">
+            <NuxtLink :to="`/rooms/${route.params.id}/feedbacks`">
               評價回饋
             </NuxtLink>
           </nav>
           <NuxtPage />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

@@ -13,7 +13,7 @@ export const PositionStore = defineStore('position', () => {
     X2: 0,
     Y2: 0,
   })
-  const update = (e) => {
+  const update = (e: MouseEvent) => {
     refObj.value.X = e.pageX
     refObj.value.Y = e.pageY
 

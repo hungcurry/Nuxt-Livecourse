@@ -144,10 +144,6 @@ export default defineNuxtConfig({
       API_URL: process.env.API_URL,
     },
   },
-  // Auto-import pinia
-  imports: {
-    dirs: ['stores'],
-  },
   // 開發環境使用 https
   devServer: {
     https: {
@@ -159,6 +155,14 @@ export default defineNuxtConfig({
     config: {
       standalone: false,
     },
+  },
+  // Auto-import 資料夾
+  imports: {
+    dirs: ['stores'],
+  },
+  pinia: {
+    // 自動匯入 /stores 目錄下的所有 store
+    storesDirs: ['./stores/**'],
   },
   modules: [
     [

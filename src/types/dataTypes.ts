@@ -9,5 +9,8 @@ type TUserRegister = {
     detail: string
   }
 }
-
-export type { TUserRegister }
+type TMenuItem = {
+  label: string
+  path: string
+}
+export type { TMenuItem, TUserRegister }

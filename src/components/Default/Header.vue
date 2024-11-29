@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TMenuItem } from '@/types/menuTypes'
+import type { TMenuItem } from '@/types/dataTypes'
 // <NuxtLink to="/">index</NuxtLink>
 // <NuxtLink to="/async">async</NuxtLink>
 const menuList: TMenuItem[] = [
@@ -18,9 +18,9 @@ const menuList: TMenuItem[] = [
   // { label: '前台Meta', path: '/meta' },
   // ----有api-----
   // { label: '前台Fetch', path: '/fetch' },
-  // { label: '前台Room', path: '/room' },
+  { label: '前台Rooms', path: '/rooms' },
   // { label: '前台AsyncData', path: '/async-data' },
-  { label: '前台Account', path: '/account' },
+  // { label: '前台Account', path: '/account' },
 
   // admin
   // { label: '後台首頁', path: '/admin' },

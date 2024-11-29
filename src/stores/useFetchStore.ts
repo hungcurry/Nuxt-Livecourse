@@ -10,7 +10,7 @@ export const FetchStore = defineStore('fetch', () => {
   const errorMessage = ref('')
   const reactiveAry = reactive({ data: [] })
 
-  const FetchInit = async (url) => {
+  const FetchInit = async (url: string) => {
     try {
       const res = await axios.get(url)
       isLoad.value = true
@@ -18,7 +18,7 @@ export const FetchStore = defineStore('fetch', () => {
     }
     catch (error) {
       // console.log('catch', error.message)
-      errorMessage.value = error.message
+      errorMessage.value = (error as Error).message
     }
   }
   return {
