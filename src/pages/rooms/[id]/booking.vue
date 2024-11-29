@@ -1,22 +1,9 @@
 <script setup lang="ts">
-import type { TApiResponse, TApiRoomItem, TApiUser } from '@/types/apiTypes'
+import type { TApiRoomItem, TApiUser } from '@/types/apiTypes'
 
+const bookingStore = useBookingStore()
 const route = useRoute()
 const roomId = route.params.id
-const { data: room } = await useFetch(`/rooms/${roomId}`, {
-  baseURL: 'https://nuxr3.zeabur.app/api/v1',
-  transform: (response: TApiResponse<TApiRoomItem>) => {
-    const { result } = response
-    return result
-  },
-  onResponseError({ response }) {
-    const { message } = response._data
-    console.error('Error:', message)
-    navigateTo('/')
-  },
-})
-
-// 訂房人資料格式
 const userInfo = ref({
   address: {
     zipcode: 802,
@@ -28,8 +15,30 @@ const userInfo = ref({
   phone: '',
   email: '',
 })
-const bookingStore = useBookingStore()
 const { bookingResult } = storeToRefs(bookingStore)
+
+// SSR
+// const { data: room } = await useFetch(`/rooms/${roomId}`, {
+//   baseURL: 'https://nuxr3.zeabur.app/api/v1',
+//   transform: (response: TApiResponse<TApiRoomItem>) => {
+//     const { result } = response
+//     return result
+//   },
+//   onResponseError({ response }) {
+//     const { message } = response._data
+//     console.error('Error:', message)
+//     navigateTo('/')
+//   },
+// })
+
+// CSR
+const apiUrl = `https://nuxr3.zeabur.app/api/v1/rooms/${roomId}`
+const { data: room, FetchInit } = useCustomFetch<TApiRoomItem>()
+onMounted(async () => {
+  await FetchInit(apiUrl)
+  console.log('booking', room.value)
+})
+
 // 清空訂房人資料
 function resetUserForm() {
   userInfo.value = {

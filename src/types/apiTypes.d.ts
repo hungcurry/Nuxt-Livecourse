@@ -1,44 +1,13 @@
-type TRoomFeature = {
-  title: string
-  isProvide: boolean
-}
-type TUserRegister = {
-  name: string
-  email: string
-  password: string
-  phone: string
-  birthday: string
-  address: {
-    zipcode: string
-    detail: string
-  }
-}
-type TBookingResult = {
-  name: string
-  user: {
-    name: string
-    phone: string
-  }
-  areaInfo: string
-  bedInfo: string
-  layoutInfo: {
-    title: string
-  }[]
-  facilityInfo: {
-    title: string
-  }[]
-}
-// ===================
-// ... API 回應型別 ...
-// ===================
-// 通用的 API 格式
+import type { TRoomFeature } from '@/types/dataTypes'
+// API 回應類型
 type TApiResponse<T> = {
-  data?: T // 例如 axios 的 { data }
-  result?: T // 例如 $fetch 常見的 { result }
-  status?: string // 可能的 API 狀態欄位
-  message?: string // 可選的訊息欄位，用於錯誤信息等
-  token?: string // 可選的 token 欄位，用於登入等
+  data?: T
+  result?: T
+  status?: string
+  message?: string
+  token?: string
 }
+// 新聞項目類型
 type TApiNewsItem = {
   _id: string
   title: string
@@ -47,6 +16,7 @@ type TApiNewsItem = {
   createdAt: string
   updatedAt: string
 }
+// 房間項目類型
 type TApiRoomItem = {
   _id: string
   name: string
@@ -64,6 +34,7 @@ type TApiRoomItem = {
   createdAt: string
   updatedAt: string
 }
+// 用戶類型
 type TApiUser = {
   name: string
   email: string
@@ -76,9 +47,15 @@ type TApiUser = {
     detail: string
   }
 }
+// 認證類型
 type TApiAuth = {
   status: boolean
   token: string
 }
-
-export type { TApiAuth, TApiNewsItem, TApiResponse, TApiRoomItem, TApiUser, TBookingResult, TUserRegister }
+export type {
+  TApiAuth,
+  TApiNewsItem,
+  TApiResponse,
+  TApiRoomItem,
+  TApiUser,
+}

@@ -1,22 +1,8 @@
-import type { TBookingResult } from '@/types/apiTypes'
+import type { TBookingResult } from '@/types/dataTypes'
 
 export const BookingStore = defineStore('booking', () => {
-  const bookingResult = ref<TBookingResult>({
-    name: '',
-    user: {
-      name: '',
-      phone: '',
-    },
-    areaInfo: '',
-    bedInfo: '',
-    layoutInfo: [],
-    facilityInfo: [],
-  })
-
-  // 其他現有的代碼...
-
+  const bookingResult = ref<TBookingResult | null>(null)
   return {
     bookingResult,
-    // 其他返回值...
   }
 })

@@ -101,7 +101,7 @@ const { bookingResult } = storeToRefs(bookingStore)
         目前沒有預訂資訊
       </h1>
     </template>
-    <NuxtLink to="/" class="btn btn-primary back-btn">
+    <NuxtLink to="/" class="btn btn-primary back-btn block mx-auto">
       回上一頁
     </NuxtLink>
   </div>
