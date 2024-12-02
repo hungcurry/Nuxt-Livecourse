@@ -33,8 +33,18 @@ type TMenuItem = {
   label: string
   path: string
 }
+type Framework = {
+  path: string
+  name: string
+  count: number
+}
+// 投票類型
+type TFrameworks = {
+  [key: string]: Framework
+}
 export type {
   TBookingResult,
+  TFrameworks,
   TMenuItem,
   TRoomFeature,
   TUserRegister,

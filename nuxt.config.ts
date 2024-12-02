@@ -147,8 +147,8 @@ export default defineNuxtConfig({
   // 開發環境使用 https
   devServer: {
     https: {
-      key: './https/localhost+3-key.pem',
-      cert: './https/localhost+3.pem',
+      key: './src/https/localhost+3-key.pem',
+      cert: './src/https/localhost+3.pem',
     },
   },
   eslint: {
@@ -171,6 +171,7 @@ export default defineNuxtConfig({
     ],
     '@unocss/nuxt',
     '@nuxt/eslint',
+    '@nuxtjs/i18n',
   ],
   // 掃描 plugins 資料夾
   plugins: [
@@ -188,6 +189,28 @@ export default defineNuxtConfig({
         .map(file => `@/plugins/${dir}/${file}`)
     }),
   ],
+  i18n: {
+    strategy: 'no_prefix',
+    locales: [
+      {
+        code: 'zh-TW',
+        file: 'zh-TW.json',
+      },
+      {
+        code: 'en-US',
+        file: 'en-US.json',
+      },
+      {
+        code: 'ja-JP',
+        file: 'ja-JP.json',
+      },
+    ],
+    langDir: 'language',
+    defaultLocale: 'zh-TW',
+    detectBrowserLanguage: {
+      useCookie: true,
+    },
+  },
   // ===================
   // ... 未啟用 ...
   // ===================
@@ -201,3 +224,4 @@ export default defineNuxtConfig({
   //   ],
   // },
 })
+ 

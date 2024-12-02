@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TApiRoomItem, TApiUser } from '@/types/apiTypes'
+import type { TApiResponse, TApiRoomItem, TApiUser } from '@/types/apiTypes'
 
 const bookingStore = useBookingStore()
 const route = useRoute()
@@ -15,29 +15,45 @@ const userInfo = ref({
   phone: '',
   email: '',
 })
-const { bookingResult } = storeToRefs(bookingStore)
 
-// SSR
-// const { data: room } = await useFetch(`/rooms/${roomId}`, {
-//   baseURL: 'https://nuxr3.zeabur.app/api/v1',
-//   transform: (response: TApiResponse<TApiRoomItem>) => {
-//     const { result } = response
-//     return result
-//   },
-//   onResponseError({ response }) {
-//     const { message } = response._data
-//     console.error('Error:', message)
-//     navigateTo('/')
-//   },
+const { setBookingInfo } = bookingStore
+
+// SSR useFetch
+// https://nuxr3.zeabur.app/api/v1/rooms/
+const { data: room } = await useFetch(`/rooms/${roomId}`, {
+  baseURL: 'https://nuxr3.zeabur.app/api/v1',
+  transform: (response: TApiResponse<TApiRoomItem>) => {
+    console.log('response', response)
+    const { result } = response
+    return result
+  },
+  onResponseError({ response }) {
+    const { message } = response._data
+    console.error('Error:', message)
+    navigateTo('/')
+  },
+})
+console.log('booking', room.value)
+
+// SSR useAsyncData
+// https://nuxr3.zeabur.app/api/v1/rooms/
+// const { data: room } = await useAsyncData('room-data', async () => {
+//   const response = await $fetch<TApiResponse<TApiRoomItem>>(`/rooms/${roomId}`, {
+//     baseURL: 'https://nuxr3.zeabur.app/api/v1',
+//   })
+//   const { result } = response
+//   console.log('response', response)
+//   return result
 // })
+// console.log('booking', room.value)
 
 // CSR
-const apiUrl = `https://nuxr3.zeabur.app/api/v1/rooms/${roomId}`
-const { data: room, FetchInit } = useCustomFetch<TApiRoomItem>()
-onMounted(async () => {
-  await FetchInit(apiUrl)
-  console.log('booking', room.value)
-})
+// const apiUrl = `https://nuxr3.zeabur.app/api/v1/rooms/${roomId}`
+// const { data: room, FetchInit } = useCustomFetch<TApiRoomItem>()
+// onMounted(async () => {
+//   await FetchInit(apiUrl)
+//   console.log('booking', room.value)
+// })
 
 // 清空訂房人資料
 function resetUserForm() {
@@ -55,14 +71,14 @@ function resetUserForm() {
 }
 // 建立訂單
 function createOrder(roomInfo: TApiRoomItem, userInfo: TApiUser) {
-  bookingResult.value = {
+  setBookingInfo({
     ...roomInfo,
     user: {
       ...userInfo,
     },
-  }
+  })
   resetUserForm()
-  console.log('bookingResult', bookingResult.value)
+  console.log('bookingResult', bookingStore.bookingResult)
   navigateTo('/confirm')
 }
 </script>
