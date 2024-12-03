@@ -42,10 +42,29 @@ type Framework = {
 type TFrameworks = {
   [key: string]: Framework
 }
+// todo list
+type TRegistrationForm = {
+  email: string
+  password: string
+  nickname: string
+}
+type TLoginForm = {
+  email: string
+  password: string
+}
+type TTodo = {
+  id: number
+  createTime: string
+  content: string
+  status: boolean
+}
 export type {
   TBookingResult,
   TFrameworks,
+  TLoginForm,
   TMenuItem,
+  TRegistrationForm,
   TRoomFeature,
+  TTodo,
   TUserRegister,
 }

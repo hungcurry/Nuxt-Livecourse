@@ -3,6 +3,7 @@ import type { TRoomFeature } from '@/types/dataTypes'
 type TApiResponse<T> = {
   data?: T
   result?: T
+  newTodo?: T
   status?: string
   message?: string
   token?: string

@@ -5,21 +5,22 @@ import type { TMenuItem } from '@/types/dataTypes'
 const menuList: TMenuItem[] = [
   // 前台
   { label: '前台index', path: '/' },
-  // { label: '嵌套Router', path: '/router' },
   // { label: '前台bootstrap', path: '/bootstrap' },
   // { label: '前台Card', path: '/card' },
   // { label: '前台env', path: '/env' },
   // { label: '前台proxy', path: '/proxy' },
+  // { label: '前台Meta', path: '/meta' },
   // ----資料夾-----
-  { label: '前台Store', path: '/store' },
+  // { label: '前台Store', path: '/store' },
+  // { label: '前台Todo', path: '/todo' },
+  // { label: '前台Rooms', path: '/rooms' },
+  // { label: '嵌套Router', path: '/router' },
   // { label: '前台Plugin', path: '/plugin' },
   // { label: '前台Server', path: '/server' },
   // { label: '前台Middleware', path: '/middleware' },
-  // { label: '前台Meta', path: '/meta' },
   // { label: '前台Locale', path: '/locale' },
   // ----有api-----
   // { label: '前台Fetch', path: '/fetch' },
-  { label: '前台Rooms', path: '/rooms' },
   // { label: '前台AsyncData', path: '/async-data' },
   // { label: '前台Account', path: '/account' },
 
