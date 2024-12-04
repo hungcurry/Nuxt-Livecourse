@@ -211,8 +211,7 @@ export default defineNuxtConfig({
       useCookie: true,
     },
   },
-  // ===================
-  // ... 未啟用 ...
+  // #region 未啟用
   // ===================
   // components: {
   //   dirs: [
@@ -223,4 +222,5 @@ export default defineNuxtConfig({
   //     '@/components', // 區域註冊
   //   ],
   // },
+  // #endregion
 })

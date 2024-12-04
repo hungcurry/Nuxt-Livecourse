@@ -1,51 +1,109 @@
 <script setup lang="ts">
+// !1.~useFetch
 import type { TApiNewsItem, TApiResponse } from '@/types/apiTypes'
 
-const route = useRoute()
-const apiUrl = 'https://nuxr3.zeabur.app/api/v1/home/news/'
-const ary = ref<TApiNewsItem[]>([])
+const isFetch = ref(false)
+const cookie = useCookie<string>('todoAuth')
+const todoStore = useTodoStore()
+const { setTodoList } = todoStore
+// SSR
+const { data: news } = await useFetch('/v1/home/news', {
+  method: 'GET',
+  baseURL: 'https://nuxr3.zeabur.app/api',
+  headers: { Authorization: cookie.value },
+  query: { /* ... */ },
+  transform: (response: TApiResponse<TApiNewsItem[]>) => {
+    isFetch.value = true
+    try {
+      // response 非proxy 響應物件
+      console.log('response', response)
+      const { result, status } = response
 
-// !1.~useFetch
-// ~nuxt 打API useFetch (useAsyncData + $fetch)
-const { data, status, error, refresh, clear } = await useFetch<TApiResponse<TApiNewsItem[]>>(apiUrl)
-console.log('nuxt', data.value?.result)
-// 這邊要小心回傳的資料格式是 RefImpl 因此 要多加層value
-ary.value = data.value?.result || []
+      // 手動 Transform
+      const transformedResult = result?.map(item => ({
+        ...item,
+        image: item.image.toUpperCase(), // 轉大寫範例
+      })) ?? []
+
+      // 將數據存入 pinia
+      if (result) {
+        // setTodoList(transformedResult)
+      }
+      return transformedResult
+    }
+    finally {
+      isFetch.value = false
+    }
+  },
+  // 當 cookie 改變時，自動重新請求
+  watch: [cookie],
+  onResponseError({ response }) {
+    console.error('API Error Response:', response)
+    const { message } = response._data || {}
+    console.error('Error Message:', message)
+    // 拋出錯誤
+    throw new Error(message || 'Unknown error occurred')
+  },
+})
+console.log('news', news.value)
 
 // !2.~useAsyncData
-// ~nuxt 打API useAsyncData
-// const { data, status, error, refresh, clear }  = await useAsyncData('news', () => {
-//   return $fetch<TApiResponse<TNewsItem[]>>(apiUrl)
+// import type { TApiNewsItem, TApiResponse } from '@/types/apiTypes'
+
+// const isFetch = ref(false)
+// const cookie = useCookie<string>('todoAuth')
+// const todoStore = useTodoStore()
+// const { setTodoList } = todoStore
+// // SSR
+// const { data: news } = await useAsyncData('news', async () => {
+//   isFetch.value = true
+//   try {
+//     const response = await $fetch<TApiResponse<TApiNewsItem[]>>('/v1/home/news', {
+//       method: 'GET',
+//       baseURL: 'https://nuxr3.zeabur.app/api',
+//       headers: { Authorization: cookie.value },
+//       query: { /* ... */ },
+//       onResponseError({ response }) {
+//         console.error('API Error Response:', response)
+//         const { message } = response._data || {}
+//         console.error('Error Message:', message)
+//         // 拋出錯誤
+//         throw new Error(message || 'Unknown error occurred')
+//       },
+//     })
+//     // response 非proxy 響應物件
+//     console.log('response', response)
+//     const { result, status } = response
+
+//     // 手動 Transform
+//     const transformedResult = result?.map(item => ({
+//       ...item,
+//       image: item.image.toUpperCase(), // 轉大寫範例
+//     })) ?? []
+
+//     // 將數據存入 pinia
+//     if (result) {
+//       // setTodoList(transformedResult)
+//     }
+//     return transformedResult
+//   }
+//   finally {
+//     isFetch.value = false
+//   }
+// }, {
+//   // 當 cookie 改變時，自動重新請求
+//   watch: [cookie],
+//   transform: (data) => {
+//     // console.log('data', data)
+//     // 這邊拿到的 已經是處理大寫的資料了
+//     return data
+//   },
 // })
-// console.log('nuxt', data.value?.result)
-// // 這邊要小心回傳的資料格式是 RefImpl 因此 要多加層value
-// ary.value = data.value?.result || []
+// console.log('news', news.value)
 </script>
 
 <template>
-  <div class="container">
-    <p>目前路由的路徑 - route.fullPath為 : {{ route.fullPath }}</p>
-    <h1 class="primary">
-      Page: AsyncData
-    </h1>
-    <h2 class="title">
-      前台AsyncData
-    </h2>
-    <hr>
-
-    <div v-if="status === 'pending'">
-      加载中...
-    </div>
-    <div v-else-if="error">
-      加载失败: {{ error }}
-    </div>
-    <ul v-else>
-      <li v-for="item in ary" :key="item._id">
-        <h3>{{ item.title }}</h3>
-        <img :src="item.image" alt="">
-      </li>
-    </ul>
-  </div>
+  <div class="container" />
 </template>
 
 <style lang="scss" scoped>
