@@ -7,18 +7,20 @@ const menuList: TMenuItem[] = [
   { label: '前台index', path: '/' },
   // { label: '前台Bootstrap', path: '/bootstrap' },
   // { label: '前台Card', path: '/bootstrap/card' },
+  // ----other-----
+  // { label: '前台Meta', path: '/other/meta' },
   // { label: '前台Env', path: '/other/env' },
   // { label: '前台Proxy', path: '/other/proxy' },
-  // { label: '前台Meta', path: '/other/meta' },
   // { label: '前台Locale', path: '/other/locale' },
+  { label: '前台Middleware', path: '/other/middleware' },
+  { label: '前台Server', path: '/other/server' },
   // ----資料夾-----
   // { label: '前台Store', path: '/store' },
   // { label: '前台Todo', path: '/todo' },
   // { label: '前台Rooms', path: '/rooms' },
   // { label: '前台Router', path: '/router' },
   // { label: '前台Plugin', path: '/plugin' },
-  // { label: '前台Server', path: '/server' },
-  // { label: '前台Middleware', path: '/middleware' },
+
   // ----有api-----
   // { label: '前台Fetch', path: '/fetch' },
   // { label: '前台AsyncData', path: '/fetch/async-data' },
