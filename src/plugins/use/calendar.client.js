@@ -12,6 +12,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // 單獨安裝
   // 第一個參數為Vue元件名稱，第二個參數為元件本身
+  // nuxtApp.vueApp.use(setupCalendar, {}); // 啟用 setupCalendar 預設設定
   nuxtApp.vueApp.component('VueCalendar', Calendar)
   nuxtApp.vueApp.component('VueDatePicker', DatePicker)
 

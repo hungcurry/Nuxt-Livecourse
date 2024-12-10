@@ -8,13 +8,6 @@ const { $hello } = useNuxtApp()
 // 文字大小寫
 const message = ref('A1B2c3deFGhijk')
 
-// 日期選擇器
-const showDatePicker = ref(false)
-const date = ref(new Date())
-function toggleDatePicker() {
-  showDatePicker.value = !showDatePicker.value
-}
-
 // 顏色選取
 const pureColor = ref('green')
 const gradientColor = ref(
@@ -70,14 +63,6 @@ function openLoading() {
     <h2 class="title">
       use
     </h2>
-    <!-- VCalendar -->
-    <button @click="toggleDatePicker">
-      {{ showDatePicker ? '關閉日期' : '顯示日期' }}
-    </button>
-    <ClientOnly>
-      <!-- <VueCalendar /> <VueDatePicker v-model="date" /> -->
-      <VueDatePicker v-if="showDatePicker" v-model="date" />
-    </ClientOnly>
 
     <!-- ColorPicker -->
     <ClientOnly>

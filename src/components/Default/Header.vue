@@ -12,14 +12,15 @@ const menuList: TMenuItem[] = [
   // { label: '前台Env', path: '/other/env' },
   // { label: '前台Proxy', path: '/other/proxy' },
   // { label: '前台Locale', path: '/other/locale' },
-  { label: '前台Middleware', path: '/other/middleware' },
-  { label: '前台Server', path: '/other/server' },
+  // { label: '前台Middleware', path: '/other/middleware' },
+  // { label: '前台Server', path: '/other/server' },
   // ----資料夾-----
   // { label: '前台Store', path: '/store' },
   // { label: '前台Todo', path: '/todo' },
   // { label: '前台Rooms', path: '/rooms' },
   // { label: '前台Router', path: '/router' },
-  // { label: '前台Plugin', path: '/plugin' },
+  { label: '前台Plugin', path: '/plugin' },
+  { label: '前台calendar', path: '/plugin/calendar' },
 
   // ----有api-----
   // { label: '前台Fetch', path: '/fetch' },
