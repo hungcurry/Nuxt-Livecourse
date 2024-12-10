@@ -38,6 +38,9 @@ dependencies:
   sweetalert2:
     specifier: ^11.14.5
     version: 11.14.5
+  swiper:
+    specifier: 11.1.14
+    version: 11.1.14
   v-calendar:
     specifier: ^3.1.2
     version: 3.1.2(@popperjs/core@2.11.8)(vue@3.5.13)
@@ -61,6 +64,9 @@ devDependencies:
   '@antfu/eslint-config':
     specifier: ^3.9.2
     version: 3.11.2(@typescript-eslint/utils@8.17.0)(@vue/compiler-sfc@3.5.13)(eslint@9.16.0)(typescript@5.7.2)
+  '@iconify/vue':
+    specifier: ^4.2.0
+    version: 4.2.0(vue@3.5.13)
   '@unocss/nuxt':
     specifier: ^0.64.1
     version: 0.64.1(postcss@8.4.49)(rollup@4.28.1)(vite@5.4.11)(vue@3.5.13)(webpack@5.97.1)
@@ -1306,6 +1312,15 @@ packages:
       mlly: 1.7.3
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@iconify/vue@4.2.0(vue@3.5.13):
+    resolution: {integrity: sha512-CMynoz9BDWugDO2B7LU/s8L99dHCiqDGCjCki6bhVx5etZhw9x0BTV7wWRdj82jtl1yQTc+QQRcHQmSvUY6R+g==}
+    peerDependencies:
+      vue: '>=3'
+    dependencies:
+      '@iconify/types': 2.0.0
+      vue: 3.5.13(typescript@5.7.2)
     dev: true
 
   /@intlify/bundle-utils@9.0.0(vue-i18n@10.0.5):
@@ -8092,6 +8107,11 @@ packages:
 
   /sweetalert2@11.14.5:
     resolution: {integrity: sha512-8MWk5uc/r6bWhiJWkUXyEuApfXAhSCZT8FFX7pZXL7YwaPxq+9Ynhi2dUzWkOFn9jvLjKj22CXuccZ+IHcnjvQ==}
+    dev: false
+
+  /swiper@11.1.14:
+    resolution: {integrity: sha512-VbQLQXC04io6AoAjIUWuZwW4MSYozkcP9KjLdrsG/00Q/yiwvhz9RQyt0nHXV10hi9NVnDNy1/wv7Dzq1lkOCQ==}
+    engines: {node: '>= 4.7.0'}
     dev: false
 
   /synckit@0.6.2:
