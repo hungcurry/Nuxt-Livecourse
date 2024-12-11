@@ -20,7 +20,8 @@ const menuList: TMenuItem[] = [
   // { label: '前台Rooms', path: '/rooms' },
   // { label: '前台Router', path: '/router' },
   { label: '前台Plugin', path: '/plugin' },
-  { label: '前台swiper', path: '/plugin/swiper' },
+  { label: '前台validate', path: '/plugin/validate' },
+  // { label: '前台swiper', path: '/plugin/swiper' },
   // { label: '前台calendar', path: '/plugin/calendar' },
 
   // ----有api-----

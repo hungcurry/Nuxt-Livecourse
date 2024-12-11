@@ -17,6 +17,15 @@ dependencies:
   '@popperjs/core':
     specifier: ^2.11.8
     version: 2.11.8
+  '@vee-validate/i18n':
+    specifier: ^4.14.7
+    version: 4.14.7
+  '@vee-validate/nuxt':
+    specifier: ^4.14.7
+    version: 4.14.7(rollup@4.28.1)(vue@3.5.13)
+  '@vee-validate/rules':
+    specifier: ^4.14.7
+    version: 4.14.7(vue@3.5.13)
   axios:
     specifier: ^1.7.7
     version: 1.7.9
@@ -30,7 +39,7 @@ dependencies:
     specifier: ^16.4.5
     version: 16.4.7
   nuxt:
-    specifier: ^3.14.0
+    specifier: ^3.12.4
     version: 3.14.1592(eslint@9.16.0)(rollup@4.28.1)(sass@1.77.6)(typescript@5.7.2)(vite@5.4.11)(vue-tsc@2.1.10)
   pinia:
     specifier: ^2.2.6
@@ -2957,6 +2966,31 @@ packages:
       - supports-color
     dev: true
 
+  /@vee-validate/i18n@4.14.7:
+    resolution: {integrity: sha512-CTGNXC0d6tMSi6pEbf+jW1ZsLhvtNClgKDna8QmHD9G/8U8W9MlyQfgcQMqmpUz0kUHyGHNZ3B13jzILUeVcXw==}
+    dev: false
+
+  /@vee-validate/nuxt@4.14.7(rollup@4.28.1)(vue@3.5.13):
+    resolution: {integrity: sha512-TegW+5tG0qwX3KDJKWVuwlaOX7nkZ7DsDt0NwhN0GvY523pD96pVh0UzsYNAXgRXlJtuq9Xte7+oGbK638KkFA==}
+    dependencies:
+      '@nuxt/kit': 3.14.1592(magicast@0.3.5)(rollup@4.28.1)
+      local-pkg: 0.5.1
+      vee-validate: 4.14.7(vue@3.5.13)
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
+      - vue
+    dev: false
+
+  /@vee-validate/rules@4.14.7(vue@3.5.13):
+    resolution: {integrity: sha512-DK2Frj6s8eQZgjeSRYHOIX3heFX1aic8taKY6q4RPY/5JtEkLDCxyWP3EBt1bteoiSDGDADrmahwqkcfJShhoA==}
+    dependencies:
+      vee-validate: 4.14.7(vue@3.5.13)
+    transitivePeerDependencies:
+      - vue
+    dev: false
+
   /@vercel/nft@0.27.9(rollup@4.28.1):
     resolution: {integrity: sha512-pTs7OchHQmSYJPR0puVQCWw/NqzuvAtnAhBurz21lq4Y4KqWoMpYKqmikkETG5r1bHNCM/hQMZ5JiRr9mhOkyg==}
     engines: {node: '>=16'}
@@ -3156,6 +3190,12 @@ packages:
     resolution: {integrity: sha512-sGhTPMuXqZ1rVOk32RylztWkfXTRhuS7vgAKv0zjqk8gbsHkJ7xfFf+jbySxt7tWObEJwyKaHMikV/WGDiQm8g==}
     dev: false
 
+  /@vue/devtools-api@7.6.7:
+    resolution: {integrity: sha512-PV4I31WaV2rfA8RGauM+69uFEzWkqtP561RiLU2wK+Ce85u3zyKW3aoESlLCNzkc4y0JaJyskH6zAE3xWOP8+Q==}
+    dependencies:
+      '@vue/devtools-kit': 7.6.7
+    dev: false
+
   /@vue/devtools-core@7.6.4(vite@5.4.11)(vue@3.5.13):
     resolution: {integrity: sha512-blSwGVYpb7b5TALMjjoBiAl5imuBF7WEOAtaJaBMNikR8SQkm6mkUt4YlIKh9874/qoimwmpDOm+GHBZ4Y5m+g==}
     peerDependencies:
@@ -3174,6 +3214,18 @@ packages:
 
   /@vue/devtools-kit@7.6.4:
     resolution: {integrity: sha512-Zs86qIXXM9icU0PiGY09PQCle4TI750IPLmAJzW5Kf9n9t5HzSYf6Rz6fyzSwmfMPiR51SUKJh9sXVZu78h2QA==}
+    dependencies:
+      '@vue/devtools-shared': 7.6.7
+      birpc: 0.2.19
+      hookable: 5.5.3
+      mitt: 3.0.1
+      perfect-debounce: 1.0.0
+      speakingurl: 14.0.1
+      superjson: 2.2.2
+    dev: false
+
+  /@vue/devtools-kit@7.6.7:
+    resolution: {integrity: sha512-V8/jrXY/swHgnblABG9U4QCbE60c6RuPasmv2d9FvVqc5d94t1vDiESuvRmdNJBdWz4/D3q6ffgyAfRVjwHYEw==}
     dependencies:
       '@vue/devtools-shared': 7.6.7
       birpc: 0.2.19
@@ -8576,6 +8628,16 @@ packages:
     dependencies:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
+
+  /vee-validate@4.14.7(vue@3.5.13):
+    resolution: {integrity: sha512-XVb1gBFJR57equ11HEI8uxNqFJkwvCP/b+p+saDPQYaW7k45cdF5jsYPEJud1o29GD6h2y7Awm7Qfm89yKi74A==}
+    peerDependencies:
+      vue: ^3.4.26
+    dependencies:
+      '@vue/devtools-api': 7.6.7
+      type-fest: 4.30.0
+      vue: 3.5.13(typescript@5.7.2)
+    dev: false
 
   /vite-hot-client@0.2.4(vite@5.4.11):
     resolution: {integrity: sha512-a1nzURqO7DDmnXqabFOliz908FRmIppkBKsJthS8rbe8hBEXwEwe4C3Pp33Z1JoFCYfVL4kTOMLKk0ZZxREIeA==}

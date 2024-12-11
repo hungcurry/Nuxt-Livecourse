@@ -170,6 +170,7 @@ export default defineNuxtConfig({
       { autoImports: ['defineStore', 'acceptHMRUpdate'] },
     ],
     '@unocss/nuxt',
+    '@vee-validate/nuxt',
     '@nuxt/eslint',
     '@nuxtjs/i18n',
   ],
@@ -209,6 +210,14 @@ export default defineNuxtConfig({
     defaultLocale: 'zh-TW',
     detectBrowserLanguage: {
       useCookie: true,
+    },
+  },
+  veeValidate: {
+    // 修改 VeeValidate 元件的名稱
+    componentNames: {
+      Form: 'VForm',
+      Field: 'VField',
+      ErrorMessage: 'VErrorMessage',
     },
   },
   // #region 未啟用
