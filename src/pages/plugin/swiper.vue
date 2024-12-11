@@ -1,25 +1,30 @@
-<script setup>
+<script setup lang="ts">
+import type { TApiResponse, TApiRoomItem } from '@/types/apiTypes'
 import { Autoplay, Navigation, Pagination } from 'swiper/modules'
 
-const { data: rooms } = await useFetch('/api/v1/rooms', {
+const { data: rooms } = await useFetch<TApiResponse<TApiRoomItem[]>>('/api/v1/rooms', {
   baseURL: 'https://nuxr3.zeabur.app',
 })
 // 將所有屬性整合成一個物件
 const swiperOptions = ref({
-  loop: true, // 開啟循環模式
+  modules: [Navigation, Pagination, Autoplay],
+  autoplay: { delay: 5000 },
+  // 開啟循環模式
+  loop: true,
   // 設定輪播的寬度
-  // slidesPerView: 1, // 根據容器寬度自適應,
-  // spaceBetween: 10,
-  // breakpoints: {
-  //   992: {
-  //     slidesPerView: 2, // 在寬度 768px 以上顯示 2 個輪播
-  //     spaceBetween: 20,
-  //   },
-  // },
+  slidesPerView: 1, // 根據容器寬度自適應,
+  spaceBetween: 10,
+  breakpoints: {
+    // 在寬度 992px 以上顯示 2 個輪播
+    992: {
+      slidesPerView: 1,
+      spaceBetween: 20,
+    },
+  },
   // 設定頁碼模組的功能 ( 需要搭配 Pagination 模組使用 )
   pagination: {
     el: '.swiper-pagination', // 頁碼操作的元素
-    type: 'bullets', //  頁碼的外觀
+    type: 'bullets' as const, //  頁碼的外觀
     clickable: true,
   },
   // 設定導航模組的功能 ( 需要搭配 Navigation 模組使用 )
@@ -27,8 +32,6 @@ const swiperOptions = ref({
     nextEl: '.swiper-button-next', // 下一個按鈕操作的元素
     prevEl: '.swiper-button-prev', // 上一個按鈕操作的元素
   },
-  autoplay: { delay: 5000 }, // 自動輪播，延遲 5000 毫秒
-  modules: [Navigation, Pagination, Autoplay], // 載入輪播需要用到的模組
 })
 </script>
 
@@ -36,25 +39,15 @@ const swiperOptions = ref({
   <div class="container mt-5">
     <ul class="list-unstyled">
       <li
-        v-for="room in rooms.result"
+        v-for="room in rooms?.result"
         :key="room._id"
-        class="card flex-lg-row mb-3"
+        class="card mb-3"
       >
         <div class="row">
           <div class="col-lg-6">
             <Swiper
-              class="h-100"
-              :modules="[Navigation, Pagination, Autoplay]"
-              :navigation="{
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-              }"
-              :pagination="{
-                el: '.swiper-pagination',
-                type: 'bullets',
-                clickable: true,
-              }"
-              :autoplay="{ delay: 5000 }"
+              class="h-100 my-swiper"
+              v-bind="swiperOptions"
             >
               <SwiperSlide
                 v-for="(image, index) in room.imageUrlList"
@@ -112,22 +105,22 @@ const swiperOptions = ref({
 </template>
 
 <style scoped lang="scss">
-// .my-swiper {
-//   width: 100%;
-//   height: 300px;
-// }
-// .swiper-slide {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   font-size: 18px;
-//   text-align: center;
-//   background: #fff;
-// }
-// .swiper-slide img {
-//   display: block;
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
-// }
+.my-swiper {
+  width: 100%;
+  height: 300px;
+}
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  text-align: center;
+  background: #fff;
+}
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 </style>

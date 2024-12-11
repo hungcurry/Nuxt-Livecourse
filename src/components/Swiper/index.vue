@@ -1,5 +1,7 @@
-<script setup>
-import Swiper from 'swiper'
+<script setup lang="ts">
+import type { SwiperOptions } from 'swiper/types'
+import type { PropType } from 'vue'
+import { Swiper } from 'swiper'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -7,27 +9,13 @@ import 'swiper/css/pagination'
 
 const props = defineProps({
   modules: {
-    type: Array,
+    type: Array as PropType<SwiperOptions['modules']>,
     required: true,
   },
   autoplay: {
-    type: Object,
+    type: Object as PropType<SwiperOptions['autoplay']>,
     default: () => ({
       delay: 3000,
-    }),
-  },
-  pagination: {
-    type: Object,
-    default: () => ({
-      el: '.swiper-pagination',
-      type: 'bullets',
-    }),
-  },
-  navigation: {
-    type: Object,
-    default: () => ({
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
     }),
   },
   loop: {
@@ -35,15 +23,39 @@ const props = defineProps({
     default: true,
   },
   slidesPerView: {
-    type: Number,
+    type: [Number, String] as PropType<SwiperOptions['slidesPerView']>,
     default: 1,
   },
+  spaceBetween: {
+    type: Number as PropType<SwiperOptions['spaceBetween']>,
+    default: 10,
+  },
+  breakpoints: {
+    type: Object as PropType<SwiperOptions['breakpoints']>,
+    default: () => ({}),
+  },
+  pagination: {
+    type: Object as PropType<SwiperOptions['pagination']>,
+    default: () => ({
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true,
+    }),
+  },
+  navigation: {
+    type: Object as PropType<SwiperOptions['navigation']>,
+    default: () => ({
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    }),
+  },
 })
-
-const swiper = ref(null)
+const swiper = ref<HTMLElement | null>(null)
 onMounted(() => {
-  // eslint-disable-next-line no-new
-  new Swiper(swiper.value, props)
+  if (swiper.value) {
+    // eslint-disable-next-line no-new
+    new Swiper(swiper.value, props)
+  }
 })
 </script>
 
@@ -59,4 +71,5 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped>
+</style>
