@@ -4,17 +4,28 @@ type TRoomFeature = {
   isProvide: boolean
 }
 // 預訂結果類型
+type TBookingInfo = {
+  roomId?: string
+  checkInDate?: string
+  checkOutDate?: string
+  bookingDays?: number
+  peopleNum?: number
+}
 type TBookingResult = {
-  name: string
-  user: {
-    name: string
-    phone: string
+  userInfo?: {
+    name?: string
+    phone?: string
+    email?: string
+    address?: {
+      zipcode?: string
+      detail?: string
+    }
   }
-  areaInfo: string
-  bedInfo: string
-  layoutInfo: TRoomFeature[]
-  facilityInfo: TRoomFeature[]
-  amenityInfo: TRoomFeature[]
+  areaInfo?: string
+  bedInfo?: string
+  layoutInfo?: TRoomFeature[]
+  facilityInfo?: TRoomFeature[]
+  amenityInfo?: TRoomFeature[]
 }
 // 用戶註冊類型
 type TUserRegister = {
@@ -59,6 +70,7 @@ type TTodo = {
   status: boolean
 }
 export type {
+  TBookingInfo,
   TBookingResult,
   TFrameworks,
   TLoginForm,

@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   // 避免之後 Nuxt3 新版本的寫法調整會影響到目前專案的運作
   compatibilityDate: '2024-04-03',
   // 啟用 Nuxt DevTools 開發工具
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   // ------------------ add ----------------------
   app: {
     // 應用路由基礎路徑

@@ -17,17 +17,17 @@ const menuList: TMenuItem[] = [
   // ----資料夾-----
   // { label: '前台Store', path: '/store' },
   // { label: '前台Todo', path: '/todo' },
-  // { label: '前台Rooms', path: '/rooms' },
+  { label: '前台Rooms', path: '/rooms' },
   // { label: '前台Router', path: '/router' },
-  { label: '前台Plugin', path: '/plugin' },
-  { label: '前台validate', path: '/plugin/validate' },
+  // { label: '前台Plugin', path: '/plugin' },
+  // { label: '前台validate', path: '/plugin/validate' },
   // { label: '前台swiper', path: '/plugin/swiper' },
   // { label: '前台calendar', path: '/plugin/calendar' },
 
   // ----有api-----
   // { label: '前台Fetch', path: '/fetch' },
   // { label: '前台AsyncData', path: '/fetch/async-data' },
-  // { label: '前台Account', path: '/account' },
+  { label: '前台Account', path: '/account' },
 
   // admin
   // { label: '後台首頁', path: '/admin' },

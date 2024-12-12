@@ -1,35 +1,30 @@
 <script setup lang="ts">
-// 串接 API 取得房型詳細資料
-// API path : https://nuxr3.zeabur.app/api/v1/rooms/{id}
-// 將資料渲染至下方的 div.room-page 區塊
-import type { TApiRoomItem } from '@/types/apiTypes'
+import type { TApiResponse, TApiRoomItem } from '@/types/apiTypes'
+import { useScreens } from 'vue-screen-utils'
 
+const bookingStore = useBookingStore()
 const router = useRouter()
 const route = useRoute()
 const roomId = route.params.id
-
+const { setBookingInfo } = bookingStore
 // SSR
-// const { data: room } = await useFetch(`/rooms/${roomId}`, {
-//   baseURL: 'https://nuxr3.zeabur.app/api/v1',
-//   transform: (response: TApiResponse<TApiRoomItem>) => {
-//     const { result } = response
-//     return result
-//   },
-//   onResponseError({ response }) {
-//     const { message } = response._data
-//     console.error('Error:', message)
-//     navigateTo('/')
-//   },
-// })
-
-// CSR
-const apiUrl = `https://nuxr3.zeabur.app/api/v1/rooms/${roomId}`
-const { data: room, FetchInit } = useCustomFetch<TApiRoomItem>()
-onMounted(async () => {
-  await FetchInit(apiUrl)
-  console.log('room', room.value)
+// 串接 API 取得房型詳細資料
+// API path : https://nuxr3.zeabur.app/api/v1/rooms/{id}
+// 將資料渲染至下方的 div.room-page 區塊
+const { data: room } = await useFetch(`/rooms/${roomId}`, {
+  baseURL: 'https://nuxr3.zeabur.app/api/v1',
+  transform: (response: TApiResponse<TApiRoomItem>) => {
+    const { result } = response
+    console.log('room', result)
+    return result
+  },
+  onResponseError({ response }) {
+    const { message } = response._data
+    console.error('Error:', message)
+    navigateTo('/')
+  },
 })
-
+const roomPrice = computed(() => room.value ? room.value.price.toLocaleString() : 0)
 // 使用 useSeoMeta  將 room 的資訊寫入 SEO Meta
 useSeoMeta({
   title: () => room.value?.name || '',
@@ -44,6 +39,74 @@ useSeoMeta({
   twitterDescription: () => room.value?.description || '',
   twitterImage: () => room.value?.imageUrl || '',
 })
+// ===================
+// ... VueDatePicker ...
+// ===================
+function generateLocaleDateRange() {
+  const today = new Date()
+  const startDate = today.toLocaleDateString('en-CA')
+
+  // today 的下一天
+  const tommorowDate = new Date(today)
+  tommorowDate.setDate(tommorowDate.getDate() + 1)
+  const tommorow = tommorowDate.toLocaleDateString('en-CA')
+
+  // 明年的同一天
+  const nextYearDate = new Date(today)
+  nextYearDate.setDate(nextYearDate.getDate() + 365)
+  const nextYear = nextYearDate.toLocaleDateString('en-CA')
+
+  return {
+    startDate,
+    tommorow,
+    nextYear,
+  }
+}
+const { startDate, tommorow, nextYear } = generateLocaleDateRange()
+const bookingPeople = ref(1)
+const bookingDate = ref({
+  start: startDate,
+  end: tommorow,
+})
+// 最早/ 最晚 可選取的日期
+const minDate = new Date(startDate)
+const maxDate = new Date(nextYear)
+// 標題
+const masks = ref({
+  title: 'YYYY 年 MM 月',
+  modelValue: 'YYYY-MM-DD',
+  input: 'YYYY-MM-DD',
+})
+
+const { mapCurrent } = useScreens({
+  xs: '0px',
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+})
+const rows = mapCurrent({ md: 2, lg: 1 }, 2)
+const columns = mapCurrent({ md: 1, lg: 2 }, 1)
+const expanded = mapCurrent({ md: false }, true)
+const titlePosition = mapCurrent({ md: 'center' }, 'left')
+
+// 計算天數
+function countDateDiffs({ start, end }: { start: string, end: string }) {
+  const startDate = new Date(start)
+  const endDate = new Date(end)
+  return Number.parseInt(String(Math.abs(endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24))
+}
+function takeReservation() {
+  const roomId = room.value?._id
+  setBookingInfo({
+    roomId,
+    checkInDate: bookingDate.value.start,
+    checkOutDate: bookingDate.value.end,
+    bookingDays: countDateDiffs(bookingDate.value),
+    peopleNum: bookingPeople.value,
+  })
+  console.log('bookingInfo', bookingStore.bookingInfo)
+  handleReservation()
+}
 // 選取要預訂的房型
 function handleReservation() {
   navigateTo(`/rooms/${roomId}/booking`)
@@ -51,119 +114,140 @@ function handleReservation() {
 </script>
 
 <template>
-  <div>
-    <h2 style="text-align: center">
-      房型詳細頁面
-    </h2>
+  <main class="mt-3">
     <div class="container">
-      <button @click="router.go(-1)">
-        回上一頁
-      </button>
-      <div class="row justify-content-center">
-        <div class="col-md-12">
-          <div v-if="room" class="room-page">
-            <div class="room-header">
-              <h1 class="room-name">
-                {{ room.name }}
-              </h1>
-              <p class="room-description">
-                {{ room.description }}
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-4">
+            <h1 class="mb-4 fw-bold">
+              {{ room?.name }}
+            </h1>
+            <p class="fw-medium">
+              {{ room?.description }}
+            </p>
+          </div>
+
+          <section class="mb-4">
+            <h3 class="title-deco mb-4 fw-bold">
+              房型基本資訊
+            </h3>
+            <ul class="d-flex gap-4 list-unstyled">
+              <li class="border rounded-3 p-3">
+                <p class="mb-0 fw-bold text-nowrap">
+                  {{ room?.areaInfo }}
+                </p>
+              </li>
+              <li class="border ounded-3 p-3">
+                <p class="mb-0 fw-bold text-nowrap">
+                  {{ room?.bedInfo }}
+                </p>
+              </li>
+              <li class="border rounded-3 p-3">
+                <p class="mb-0 fw-bold text-nowrap">
+                  2-{{ room?.maxPeople }} 人
+                </p>
+              </li>
+            </ul>
+          </section>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex flex-column gap-4">
+            <h5 class="pb-4 mb-0 fw-bold border-bottom">
+              預訂房型
+            </h5>
+
+            <div>
+              <h2 class="fw-bold">
+                {{ room?.name }}
+              </h2>
+              <p class="mb-0 fw-medium">
+                {{ room?.description }}
               </p>
             </div>
 
-            <div class="room-gallery">
-              <img :src="room.imageUrl" :alt="room.name" class="room-main-image">
-              <div class="room-image-list">
-                <img
-                  v-for="imageUrl in room.imageUrlList"
-                  :key="imageUrl"
-                  :src="imageUrl"
-                  :alt="room.name"
+            <div class="d-flex justify-center items-center gap-2">
+              <div class="flex-grow-1 flex-shrink-1">
+                <input
+                  id="checkinInput"
+                  readonly
+                  type="date"
+                  class="form-control fw-medium rounded-3"
+                  placeholder="yyyy-mm-dd"
+                  :value="bookingDate.start"
                 >
+                <label class="fw-medium" for="checkinInput">入住 </label>
+              </div>
+              <div class="flex-grow-1 flex-shrink-1">
+                <input
+                  id="checkoutInput"
+                  readonly
+                  type="date"
+                  class="form-control fw-medium rounded-3"
+                  placeholder="yyyy-mm-dd"
+                  :value="bookingDate.end"
+                >
+                <label class="fw-medium" for="checkoutInput">退房 </label>
               </div>
             </div>
-          </div>
-        </div>
+            <ClientOnly>
+              <VueDatePicker
+                v-model.range.string="bookingDate"
+                :masks="masks"
+                :first-day-of-week="1"
+                :min-date="minDate"
+                :max-date="maxDate"
+                :rows="rows"
+                :columns="columns"
+                :expanded="expanded"
+                :title-position="titlePosition"
+              />
+            </ClientOnly>
 
-        <div class="col-md-6">
-          <div v-if="room" class="room-page">
-            <div class="room-info">
-              <div class="info-block">
-                <h2>房間資訊</h2>
-                <p>面積: {{ room.areaInfo }}</p>
-                <p>床型: {{ room.bedInfo }}</p>
-                <p>最多容納人數: {{ room.maxPeople }}</p>
-                <p>價格: NT${{ room.price }}</p>
-              </div>
-
-              <div class="info-block">
-                <h2>房間配置</h2>
-                <ul v-for="item in room.layoutInfo" :key="item.title">
-                  <li>{{ item.title }}</li>
-                </ul>
-              </div>
-
-              <div class="info-block">
-                <h2>房內設施</h2>
-                <ul v-for="item in room.amenityInfo" :key="item.title">
-                  <li>{{ item.title }}</li>
-                </ul>
-              </div>
-
-              <div class="info-block">
-                <h2>客房備品</h2>
-                <ul v-for="item in room.amenityInfo" :key="item.title">
-                  <li>{{ item.title }}</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div v-if="room" class="room-page">
-            <div class="room-info">
-              <div class="info-block">
-                <h2>
-                  價格詳情
-                </h2>
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="mb-0">
+                人數
+              </p>
+              <div class="d-flex align-items-center gap-4">
                 <button
+                  :class="{ 'disabled ': bookingPeople === 1 }"
+                  class="btn p-2 border rounded-circle"
                   type="button"
-                  class="btn btn-primary stretched-link"
-                  @click="handleReservation"
+                  @click="bookingPeople--"
                 >
-                  我要預訂
+                  <Icon class="fs-5" icon="ic:baseline-minus" />
+                </button>
+
+                <h6 id="people" class="fw-bold mb-0" name="people">
+                  {{ bookingPeople }}
+                </h6>
+
+                <button
+                  :class="{
+                    disabled: bookingPeople === room?.maxPeople,
+                  }"
+                  class="btn p-2 border rounded-circle"
+                  type="button"
+                  @click="bookingPeople++"
+                >
+                  <Icon class="fs-5" icon="ic:baseline-plus" />
                 </button>
               </div>
             </div>
+            <h5 class="mb-0 fw-bold">
+              NT$ {{ roomPrice }}
+            </h5>
+            <button
+              type="button"
+              class="btn btn-primary py-3 fw-bold rounded-3"
+              @click="takeReservation"
+            >
+              立即預訂
+            </button>
           </div>
         </div>
-
-        <!-- 第2層路由 下方頁面 有缺陷會跳回畫面上方 -->
-        <!-- <div class="col-md-6">
-          <nav>
-            <h3 style="text-align: center">
-              第2層路由 下方頁面
-            </h3>
-            <hr>
-            <NuxtLink :to="`/rooms/${route.params.id}`">
-              房型首頁
-            </NuxtLink>
-            <NuxtLink :to="`/rooms/${route.params.id}/about`">
-              房型介紹
-            </NuxtLink>
-            <NuxtLink :to="`/rooms/${route.params.id}/list`">
-              房型列表
-            </NuxtLink>
-            <NuxtLink :to="`/rooms/${route.params.id}/feedbacks`">
-              評價回饋
-            </NuxtLink>
-          </nav>
-          <NuxtPage />
-        </div> -->
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>

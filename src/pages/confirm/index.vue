@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // 1. 從 useBookingStore 取出資料 bookingResult
 const bookingStore = useBookingStore()
-const { bookingResult } = storeToRefs(bookingStore)
+const { bookingResult, bookingInfo } = storeToRefs(bookingStore)
 </script>
 
 <template>
@@ -20,13 +20,13 @@ const { bookingResult } = storeToRefs(bookingStore)
             姓名
           </h4>
           <p class="info-content">
-            {{ bookingResult.user.name }}
+            {{ bookingResult.userInfo?.name }}
           </p>
           <h4 class="info-title">
             手機號碼
           </h4>
           <p class="info-content">
-            {{ bookingResult.user.phone }}
+            {{ bookingResult.userInfo?.phone }}
           </p>
         </div>
         <div class="col-lg-8">
@@ -34,7 +34,7 @@ const { bookingResult } = storeToRefs(bookingStore)
             房型資訊
           </h3>
           <p class="fs-1 room-name">
-            {{ bookingResult.name }}
+            {{ bookingInfo?.roomId }}
           </p>
           <hr class="divider">
           <section class="mb-5">

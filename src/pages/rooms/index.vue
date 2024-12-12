@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TApiResponse, TApiRoomItem } from '@/types/apiTypes'
+import { Autoplay, Navigation, Pagination } from 'swiper/modules'
 
 // const apiUrl = 'https://nuxr3.zeabur.app/api/v1/rooms'
 // const { data: roomsList, FetchInit } = useCustomFetch<TApiRoomItem[]>()
@@ -103,7 +104,29 @@ import type { TApiResponse, TApiRoomItem } from '@/types/apiTypes'
 // ])
 // #endregion
 
-const route = useRoute()
+
+const swiperOptions = ref({
+  modules: [Navigation, Pagination, Autoplay],
+  autoplay: { delay: 5000 },
+  loop: true,
+  slidesPerView: 1,
+  spaceBetween: 10,
+  breakpoints: {
+    992: {
+      slidesPerView: 1,
+      spaceBetween: 20,
+    },
+  },
+  pagination: {
+    el: '.swiper-pagination',
+    type: 'bullets' as const,
+    clickable: true,
+  },
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+})
 // SSR
 const { data: roomsList } = await useFetch('/rooms/', {
   baseURL: 'https://nuxr3.zeabur.app/api/v1',
@@ -124,35 +147,80 @@ function handleClickRoom(id: string) {
 </script>
 
 <template>
-  <div>
-    <h2>房型 index {{ route.fullPath }}</h2>
-    <div class="container mt-4">
-      <div class="row justify-content-center gy-3">
-        <div v-for="room in roomsList" :key="room._id" class="col-12 col-md-6 col-lg-3">
-          <div class="card h-100 shadow-sm" @click="handleClickRoom(room._id)">
-            <img :src="room.imageUrl" class="card-img-top" alt="Room Image">
-            <div class="card-body d-flex flex-column">
-              <h3 class="card-title">
-                {{ room.name }}
-              </h3>
-              <p class="card-text flex-grow-1">
-                {{ room.description }}
-              </p>
-              <ul class="list-unstyled">
-                <li><strong>面積:</strong> {{ room.areaInfo }}</li>
-                <li><strong>床型:</strong> {{ room.bedInfo }}</li>
-                <li><strong>最大容納人數:</strong> {{ room.maxPeople }}</li>
-                <li class="card-text d-flex justify-content-between">
-                  <strong class="text-primary">價格:</strong>
-                  <span class="text-end font-size-22px">{{ room.price }}</span>
-                </li>
-              </ul>
+  <main>
+    <div class="container mt-5">
+      <h2 class="fs-1 fw-bold">
+        各種房型，任您挑選
+      </h2>
+      <ul class="list-unstyled">
+        <li
+          v-for="room in roomsList"
+          :key="room._id"
+          class="card mb-3"
+        >
+          <div class="row">
+            <div class="col-lg-6">
+              <Swiper
+                class="h-100"
+                v-bind="swiperOptions"
+              >
+                <SwiperSlide
+                  v-for="(image, index) in room.imageUrlList"
+                  :key="index"
+                >
+                  <img
+                    class="w-100 h-100 object-fit-cover"
+                    :src="image"
+                    :alt="`room-${index}`"
+                    loading="lazy"
+                  >
+                </SwiperSlide>
+              </Swiper>
+            </div>
+            <div class="col-lg-6">
+              <div class="card-body">
+                <h3 class="card-title fs-2 fw-bold">
+                  {{ room.name }}
+                </h3>
+                <p class="card-text fw-medium">
+                  {{ room.description }}
+                </p>
+                <ul class="d-flex gap-4 list-unstyled mb-5">
+                  <li class="border rounded-3 p-3">
+                    <p class="mb-0 fw-bold text-nowrap">
+                      {{ room.areaInfo }}
+                    </p>
+                  </li>
+                  <li class="border rounded-3 p-3">
+                    <p class="mb-0 fw-bold">
+                      {{ room.bedInfo }}
+                    </p>
+                  </li>
+                  <li class="border rounded-3 p-3">
+                    <p class="mb-0 fw-bold">
+                      2-{{ room.maxPeople }} 人
+                    </p>
+                  </li>
+                </ul>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center">
+                  <p class="mb-0 fw-bold">
+                    NT$ {{ room.price }}
+                  </p>
+                  <NuxtLink
+                    :to="`/rooms/${room._id}`"
+                    class="icon-link icon-link-hover"
+                  >
+                    <Icon class="bi fs-5" icon="mdi:arrow-right" />
+                  </NuxtLink>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
@@ -163,5 +231,8 @@ function handleClickRoom(id: string) {
   object-fit: cover;
   height: 200px;
   max-width: 100%;
+}
+.icon-link {
+  color: $primary;
 }
 </style>
