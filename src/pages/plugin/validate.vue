@@ -1,15 +1,17 @@
-<script setup>
+<script setup lang="ts">
 const { successAlert } = useAlert()
-const submitButtonRef = ref(null)
-const formRef = ref(null)
+const submitButtonRef = ref<HTMLButtonElement | null>(null)
+const formRef = ref<HTMLFormElement | null>(null)
 
 function confirmReservation() {
   console.log(submitButtonRef.value)
   // <button type="submit" disabled=""> 確認訂房 </button>
-  submitButtonRef.value.click()
+  if (submitButtonRef.value) {
+    submitButtonRef.value.click()
+  }
 }
 
-function onSubmit(value = {}, { resetForm }) {
+function onSubmit(value = {}, { resetForm }: { resetForm: () => void }) {
   console.log('送出的值:', value)
   successAlert('送出訂房!')
   // 改成用 VeeValidate  的 resetForm 方法將表單重置
@@ -135,7 +137,7 @@ function onSubmit(value = {}, { resetForm }) {
             <button
               ref="submitButtonRef"
               type="submit"
-
+              style="display: none;"
               :disabled="!meta.valid"
             >
               確認訂房
