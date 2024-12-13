@@ -26,6 +26,9 @@ type TBookingResult = {
   layoutInfo?: TRoomFeature[]
   facilityInfo?: TRoomFeature[]
   amenityInfo?: TRoomFeature[]
+  imageUrl?: string
+  name?: string
+  totalPrice?: number
 }
 // 用戶註冊類型
 type TUserRegister = {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // 1. 從 useBookingStore 取出資料 bookingResult
 const bookingStore = useBookingStore()
+const { formatDateWeekday } = useFormatWeek()
 const { bookingResult, bookingInfo } = storeToRefs(bookingStore)
 </script>
 
@@ -28,6 +29,12 @@ const { bookingResult, bookingInfo } = storeToRefs(bookingStore)
           <p class="info-content">
             {{ bookingResult.userInfo?.phone }}
           </p>
+          <h4 class="info-title">
+            電子信箱
+          </h4>
+          <p class="info-content">
+            {{ bookingResult.userInfo?.email }}
+          </p>
         </div>
         <div class="col-lg-8">
           <h3 class="mb-3 subtitle">
@@ -35,6 +42,25 @@ const { bookingResult, bookingInfo } = storeToRefs(bookingStore)
           </h3>
           <p class="fs-1 room-name">
             {{ bookingInfo?.roomId }}
+          </p>
+
+          <img :src="bookingResult?.imageUrl" alt="room-image" class="room-image">
+          <div class="room-info d-flex justify-content-between">
+            <p class="fs-1 room-name">
+              {{ bookingResult?.name }}，{{ bookingInfo?.bookingDays }} 晚
+            </p>
+            <p class="fs-1 room-name">
+              住宿人數：{{ bookingInfo?.peopleNum }} 位
+            </p>
+          </div>
+          <p class="fs-1 room-name">
+            入住時間：{{ formatDateWeekday(bookingInfo?.checkInDate || '') }}
+          </p>
+          <p class="fs-1 room-name">
+            退房時間：{{ formatDateWeekday(bookingInfo?.checkOutDate || '') }}
+          </p>
+          <p class="fs-1 room-name">
+            總價：{{ bookingResult?.totalPrice }} 元
           </p>
           <hr class="divider">
           <section class="mb-5">

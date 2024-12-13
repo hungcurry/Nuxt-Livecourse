@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import type { TApiResponse, TApiRoomItem, TApiUser } from '@/types/apiTypes'
+import { cityList, ZipCodeMap } from '@/utils/zipcodes'
 
-// definePageMeta({
-//   middleware: ['account-auth'],
-// })
-const submitButtonRef = ref(null)
+definePageMeta({
+  middleware: ['account-auth'],
+})
+const submitButtonRef = ref<HTMLButtonElement | null>(null)
 const bookingStore = useBookingStore()
 const route = useRoute()
 const roomId = route.params.id
-const discountPrice = 1000
-const userInfo = ref({
+const userInfo = ref<TApiUser>({
   address: {
-    zipcode: 802,
+    zipcode: '',
     county: '',
     district: '',
     detail: '',
@@ -20,26 +20,20 @@ const userInfo = ref({
   phone: '',
   email: '',
 })
+
+const { formatDateWeekday } = useFormatWeek()
 const { setBookingResult } = bookingStore
 const { bookingInfo } = storeToRefs(bookingStore)
 
+if (!bookingInfo.value) {
+  navigateTo('/')
+}
+// SSR useFetch
+// #region
 // SSR useFetch
 // https://nuxr3.zeabur.app/api/v1/rooms/
-const { data: room } = await useFetch(`/rooms/${roomId}`, {
-  baseURL: 'https://nuxr3.zeabur.app/api/v1',
-  transform: (response: TApiResponse<TApiRoomItem>) => {
-    // console.log('response', response)
-    const { result } = response
-    console.log('booking', result)
-    return result
-  },
-  onResponseError({ response }) {
-    const { message } = response._data
-    console.error('Error:', message)
-    navigateTo('/')
-  },
-})
-// #region
+//
+
 // SSR useAsyncData
 // https://nuxr3.zeabur.app/api/v1/rooms/
 // const { data: room } = await useAsyncData('room-data', async () => {
@@ -51,13 +45,39 @@ const { data: room } = await useFetch(`/rooms/${roomId}`, {
 //   return result
 // })
 // console.log('booking', room.value)
+//
 // #endregion
+const { data: room } = await useFetch(`/rooms/${roomId}`, {
+  baseURL: 'https://nuxr3.zeabur.app/api/v1',
+  transform: (response: TApiResponse<TApiRoomItem>) => {
+    const { result } = response
+    console.log('booking', result)
+    return result
+  },
+  onResponseError({ response }) {
+    const { message } = response._data
+    console.error('Error:', message)
+    navigateTo('/')
+  },
+})
+const discountPrice = computed(() => {
+  const price = room.value?.price
+  if (!price || price === 0)
+    return 0
+  return price / 10
+})
+const districtList = computed(() => {
+  const city = ZipCodeMap.find(city => city.name === userInfo.value.address.county)
+  return city?.districts
+})
+const totalPrice = computed(() => {
+  return (room.value?.price || 0) * (bookingInfo.value?.bookingDays || 0) - discountPrice.value
+})
 
-// 清空訂房人資料
 function resetUserForm() {
   userInfo.value = {
     address: {
-      zipcode: 802,
+      zipcode: '',
       county: '',
       district: '',
       detail: '',
@@ -67,8 +87,17 @@ function resetUserForm() {
     email: '',
   }
 }
+function submitOrder() {
+  if (submitButtonRef.value) {
+    submitButtonRef.value.click()
+  }
+}
 // 建立訂單
-// #region 建立訂單
+// #region
+// 登入帳號
+// ooopp42+5@gmail.com
+// Zx26473564
+
 // {
 //   "roomId": "65251f6095429cd58654bf12",
 //   "checkInDate": "2023/06/18",
@@ -84,57 +113,70 @@ function resetUserForm() {
 //     "email": "example@gmail.com"
 //   }
 // }
-// ooopp42+5@gmail.com
-// Zx26473564
+
 // #endregion
 async function createOrder(roomInfo: TApiRoomItem, userInfo: TApiUser) {
-  const cookie = useCookie('Freyja-auth')
+  try {
+    // 取得認證 cookie
+    const cookie = useCookie('Freyja-auth')
+    // 設定郵遞區號
+    if (districtList.value?.length) {
+      userInfo.address.zipcode = districtList.value[0].zip
+    }
+    if (totalPrice.value) {
+      roomInfo.totalPrice = totalPrice.value
+    }
 
-  setBookingResult({
-    ...roomInfo,
-    userInfo: {
-      name: userInfo.name,
-      phone: userInfo.phone,
-      email: userInfo.email,
-      address: {
-        zipcode: String(userInfo.address.zipcode),
-        detail: userInfo.address.detail,
-      },
-    },
-  })
+    // 組合地址
+    const fullAddress = `${userInfo.address.county}${userInfo.address.district}${userInfo.address.detail}`
 
-  const orderData = {
-    roomId: roomInfo._id,
-    checkInDate: bookingInfo.value?.checkInDate,
-    checkOutDate: bookingInfo.value?.checkOutDate,
-    peopleNum: bookingInfo.value?.peopleNum,
-    userInfo: {
-      address: {
-        zipcode: String(userInfo.address.zipcode),
-        detail: userInfo.address.detail,
+    // 設定訂房結果
+    const bookingResultData = {
+      ...roomInfo,
+      userInfo: {
+        name: userInfo.name,
+        phone: userInfo.phone,
+        email: userInfo.email,
+        address: {
+          zipcode: String(userInfo.address.zipcode),
+          detail: fullAddress,
+        },
       },
-      name: userInfo.name,
-      phone: userInfo.phone,
-      email: userInfo.email,
-    },
+    }
+    console.log('bookingResultData', bookingResultData)
+    setBookingResult(bookingResultData)
+
+    // 建立訂單資料
+    const orderData = {
+      roomId: roomInfo._id,
+      checkInDate: bookingInfo.value?.checkInDate,
+      checkOutDate: bookingInfo.value?.checkOutDate,
+      peopleNum: bookingInfo.value?.peopleNum,
+      userInfo: {
+        name: userInfo.name,
+        phone: userInfo.phone,
+        email: userInfo.email,
+        address: {
+          zipcode: String(userInfo.address.zipcode),
+          detail: fullAddress,
+        },
+      },
+    }
+    const { result } = await $fetch<TApiResponse<any>>('/api/v1/orders/', {
+      baseURL: 'https://nuxr3.zeabur.app',
+      method: 'POST',
+      body: orderData,
+      headers: cookie.value ? { Authorization: cookie.value } : undefined,
+    })
+    // 清空表單並導向確認頁
+    resetUserForm()
+    navigateTo('/confirm')
+    return result._id
   }
-  const { result } = await $fetch<TApiResponse<any>>('/api/v1/orders/', {
-    baseURL: 'https://nuxr3.zeabur.app',
-    method: 'POST',
-    body: { ...orderData },
-    headers: cookie.value
-      ? {
-          Authorization: cookie.value,
-        }
-      : undefined,
-  })
-  console.log('訂單成功result', result)
-  const orderId = result._id
-
-  resetUserForm()
-  console.log('bookingResult', bookingStore.bookingResult)
-  navigateTo('/confirm')
-  // navigateTo(`/confirm/${orderId}`)
+  catch (error) {
+    console.error('建立訂單失敗:', error)
+    throw error
+  }
 }
 </script>
 
@@ -154,10 +196,13 @@ async function createOrder(roomInfo: TApiRoomItem, userInfo: TApiUser) {
                 {{ room.name }}
               </h2>
               <p class="card-text">
-                {{ room.description }}
+                入住：{{ formatDateWeekday(bookingInfo?.checkInDate || '') }}
+              </p>
+              <p class="card-text">
+                退房：{{ formatDateWeekday(bookingInfo?.checkOutDate || '') }}
               </p>
               <p class="card-text d-flex justify-content-between">
-                <strong>價格:{{ room.price }}</strong>
+                <strong>房客人數:{{ bookingInfo?.peopleNum }}</strong>
               </p>
             </div>
 
@@ -165,97 +210,106 @@ async function createOrder(roomInfo: TApiRoomItem, userInfo: TApiUser) {
             <!-- 訂房人資訊 -->
             <section class="mb-5">
               <h3>訂房人資訊</h3>
-              <form class="d-flex flex-column gap-6">
+              <VForm v-slot="{ errors, meta }" class="d-flex flex-column gap-6" @submit="createOrder(room, userInfo)">
                 <div class="mb-3">
-                  <label
-                    for="name"
-                    class="form-label fs-8 fs-md-7 fw-bold"
-                  >姓名</label><input
+                  <label for="name" class="form-label fs-8 fs-md-7 fw-bold">姓名</label>
+                  <VField
                     id="name"
                     v-model="userInfo.name"
+                    name="姓名"
+                    rules="required|min:2"
                     type="text"
                     class="form-control rounded-3"
+                    :class="{ 'is-invalid': errors['姓名'] }"
                     placeholder="請輸入姓名"
-                    name="name"
-                  >
+                  />
+                  <VErrorMessage name="姓名" class="invalid-feedback" />
                 </div>
                 <div class="mb-3">
-                  <label
-                    for="phone"
-                    class="form-label fs-8 fs-md-7 fw-bold"
-                  >手機號碼</label><input
+                  <label for="phone" class="form-label fs-8 fs-md-7 fw-bold">手機號碼</label>
+                  <VField
                     id="phone"
                     v-model="userInfo.phone"
+                    name="手機號碼"
+                    rules="required|phone"
                     type="tel"
                     class="form-control rounded-3"
+                    :class="{ 'is-invalid': errors['手機號碼'] }"
                     placeholder="請輸入手機號碼"
-                    name="phone"
-                  >
+                  />
+                  <VErrorMessage name="手機號碼" class="invalid-feedback" />
                 </div>
                 <div class="mb-3">
-                  <label
-                    for="email"
-                    class="form-label fs-8 fs-md-7 fw-bold"
-                  >電子信箱</label><input
+                  <label for="email" class="form-label fs-8 fs-md-7 fw-bold">電子信箱</label>
+                  <VField
                     id="email"
                     v-model="userInfo.email"
+                    name="電子信箱"
+                    rules="required|email"
                     type="email"
                     class="form-control rounded-3"
+                    :class="{ 'is-invalid': errors['電子信箱'] }"
                     placeholder="請輸入電子信箱"
-                    name="email"
-                  >
+                  />
+                  <VErrorMessage name="電子信箱" class="invalid-feedback" />
                 </div>
-                <div data-v-a22825e2="" class="mb-3">
-                  <label
-                    for="road"
-                    class="form-label fs-8 fs-md-7 fw-bold"
-                  >地址</label>
+                <div class="mb-3">
+                  <label for="road" class="form-label fs-8 fs-md-7 fw-bold">地址</label>
                   <div class="d-flex gap-2 mb-4">
-                    <select
+                    <VField
                       v-model="userInfo.address.county"
+                      name="縣市"
+                      rules="required"
+                      as="select"
                       class="form-select"
-                      name="county"
+                      :class="{ 'is-invalid': errors['縣市'] }"
                     >
                       <option selected disabled>
                         請選擇縣市
                       </option>
-                      <option value="高雄市">
-                        高雄市
+                      <option v-for="city in cityList" :key="city" :value="city">
+                        {{ city }}
                       </option>
-                    </select><select
+                    </VField>
+                    <VField
                       v-model="userInfo.address.district"
+                      name="行政區"
+                      rules="required"
+                      as="select"
                       class="form-select"
-                      name="district"
+                      :class="{ 'is-invalid': errors['行政區'] }"
                     >
                       <option selected disabled>
                         請選擇行政區
                       </option>
-                      <option value="前金區">
-                        前金區
+                      <option
+                        v-for="district in districtList"
+                        :key="district.zip"
+                        :value="district.name"
+                      >
+                        {{ district.name }}
                       </option>
-                      <option value="鹽埕區">
-                        鹽埕區
-                      </option>
-                      <option value="新興區">
-                        新興區
-                      </option>
-                    </select>
+                    </VField>
                   </div>
-                  <input
+                  <VField
                     id="road"
                     v-model="userInfo.address.detail"
+                    name="詳細地址"
+                    rules="required"
                     type="text"
                     class="form-control rounded-3"
+                    :class="{ 'is-invalid': errors['詳細地址'] }"
                     placeholder="請輸入詳細地址"
-                    name="road"
-                  >
+                  />
+                  <VErrorMessage name="詳細地址" class="invalid-feedback" />
                 </div>
                 <button
                   ref="submitButtonRef"
                   type="submit"
                   class="d-none"
+                  :disabled="!meta.valid"
                 />
-              </form>
+              </VForm>
             </section>
 
             <!-- 房間資訊 -->
@@ -311,6 +365,7 @@ async function createOrder(roomInfo: TApiRoomItem, userInfo: TApiUser) {
               </ul>
             </section>
           </div>
+          <!-- 價格 -->
           <div class="col-md-6">
             <section class="mb-5">
               <img
@@ -344,17 +399,14 @@ async function createOrder(roomInfo: TApiRoomItem, userInfo: TApiUser) {
                   <p class="mb-0">
                     總價
                   </p>
-                  <span>NT$
-                    {{
-                      room.price * (bookingInfo?.bookingDays || 0) - discountPrice
-                    }}</span>
+                  <span>NT${{ totalPrice }}</span>
                 </div>
               </div>
 
               <button
                 class="btn btn-lg btn-primary w-100 fw-bold rounded-3"
                 type="button"
-                @click="createOrder(room, userInfo)"
+                @click="submitOrder"
               >
                 確認訂房
               </button>

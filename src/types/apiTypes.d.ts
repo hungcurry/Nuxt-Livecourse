@@ -28,6 +28,7 @@ type TApiRoomItem = {
   bedInfo: string
   maxPeople: number
   price: number
+  totalPrice?: number
   status: number
   layoutInfo: TRoomFeature[]
   facilityInfo: TRoomFeature[]
@@ -37,16 +38,15 @@ type TApiRoomItem = {
 }
 // 用戶類型
 type TApiUser = {
-  name: string
-  email: string
-  phone: string
-  birthday?: string
   address: {
-    zipcode: number
+    zipcode: string | number
     county: string
     district: string
     detail: string
   }
+  name: string
+  email: string
+  phone: string
 }
 // 認證類型
 type TApiAuth = {

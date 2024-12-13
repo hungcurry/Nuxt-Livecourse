@@ -29,7 +29,7 @@ async function handelLogin() {
 
     if (response.status) {
       const { status, token } = response
-      const auth = useCookie('Freyja-auth', { maxAge: 600 })
+      const auth = useCookie('Freyja-auth', { maxAge: 3600 })
       auth.value = token
       await successAlert('登入成功')
       await navigateTo('/account/orders')
