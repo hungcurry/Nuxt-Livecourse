@@ -1,7 +1,5 @@
 <script setup lang="ts">
 const route = useRoute()
-
-const { public: { apiUrl: defaultUrl } } = useRuntimeConfig()
 </script>
 
 <template>
