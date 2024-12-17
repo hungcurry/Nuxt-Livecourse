@@ -1,34 +1,26 @@
 <script setup lang="ts">
-// 父元件資料
-const title = 'Vue 父子元件範例'
-const count = ref(0)
-const isActive = ref(true)
-const items = ref(['Apple', 'Banana', 'Cherry'])
-const config = {
-  theme: 'light' as 'light' | 'dark',
-  size: 'md' as 'sm' | 'md' | 'lg',
-}
-
-// 處理子元件的事件
-function handleUpdate(newCount: number) {
-  count.value = newCount
-}
-
-function handleSubmit(data: { id: number, name: string }) {
-  console.log('提交資料:', data)
-}
+const route = useRoute()
 </script>
 
 <template>
-  <div>
-    <Child
-      :title="title"
-      :count="count"
-      :is-active="isActive"
-      :items="items"
-      :config="config"
-      @update="handleUpdate"
-      @submit="handleSubmit"
-    />
+  <div class="container">
+    <p>目前路由的路徑 - route.fullPath為 : {{ route.fullPath }}</p>
+    <h1 class="primary">
+      Page: 首頁
+    </h1>
+    <h2 class="title">
+      前台首頁
+    </h2>
+    <hr>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.primary {
+  color: $primary;
+}
+.title {
+  color: #e38d28;
+  font-size: $font-base;
+}
+</style>
